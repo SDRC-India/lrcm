@@ -1,0 +1,1172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_summary"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.sdrc.lrcasemanagement.activity.SummaryActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary" />
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/dates_picker_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/app_bar"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:id="@+id/start_date_label"
+            style="@style/CustomTextStyle"
+            android:text="@string/start_date" />
+
+        <RelativeLayout
+            android:id="@+id/start_date_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/start_date_label">
+
+            <EditText
+                android:id="@+id/start_date"
+                style="@style/CustomEditTextStyle"
+                android:layout_marginRight="5sp"
+                android:layout_toLeftOf="@+id/show_start_date"
+                android:focusable="false"
+                android:gravity="center_vertical"
+                android:hint="@string/start_date"></EditText>
+
+            <ImageView
+                android:id="@+id/show_start_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/datepicker" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/end_date_label"
+            style="@style/CustomTextStyle"
+            android:layout_below="@id/start_date_picker"
+            android:text="@string/end_date" />
+
+        <RelativeLayout
+            android:id="@+id/end_date_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/end_date_label">
+
+            <EditText
+                android:id="@+id/end_date"
+                style="@style/CustomEditTextStyle"
+                android:layout_marginRight="5sp"
+                android:layout_toLeftOf="@+id/show_end_date"
+                android:focusable="false"
+                android:gravity="center_vertical"
+                android:hint="@string/end_date"></EditText>
+
+            <ImageView
+                android:id="@+id/show_end_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/datepicker" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/dates_picker_layout"
+        android:layout_weight="1.5">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/grey_border"
+                android:orientation="vertical"
+                android:padding="10sp"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true">
+
+                <LinearLayout
+                    android:id="@+id/total_case_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="1." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/total_no_of_cases" />
+
+                    <TextView
+                        android:id="@+id/case_total_text"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/case_opened_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="2." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_opened_cases" />
+
+                    <TextView
+                        android:id="@+id/case_opened_text"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/case_closed_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="3." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_closed_cases" />
+
+                    <TextView
+                        android:id="@+id/case_closed_text"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/deliveries_conducted_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="4." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_deliveries_conducted" />
+
+                    <TextView
+                        android:id="@+id/deliveries_conducted_text"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="5." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_c_section" />
+
+                    <TextView
+                        android:id="@+id/no_of_c_section"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="6." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/deliveries_conducted_morning_eight_to_evening_eight" />
+
+                    <TextView
+                        android:id="@+id/deliveries_conducted_morning_eight_to_evening_eight"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="7." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/deliveries_conducted_evening_eight_to_morning_eight" />
+
+                    <TextView
+                        android:id="@+id/deliveries_conducted_evening_eight_to_morning_eight"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="8." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/c_section_done_morning_eight_to_evening_eight" />
+
+                    <TextView
+                        android:id="@+id/c_section_done_morning_eight_to_evening_eight"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="9." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/c_section_done_evening_eight_to_morning_eight" />
+
+                    <TextView
+                        android:id="@+id/c_section_done_evening_eight_to_morning_eight"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="10." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_preterm_labor_cases_treated_with_corticosteroides" />
+
+                    <TextView
+                        android:id="@+id/no_of_preterm_labor_cases_treated_with_corticosteroides"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="11." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_obstetric_complications_treated_with_magsulf" />
+
+                    <TextView
+                        android:id="@+id/no_of_obstetric_complications_treated_with_magsulf"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="12." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_live_births" />
+
+                    <TextView
+                        android:id="@+id/no_of_live_births"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="13." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_male_live_birth" />
+
+                    <TextView
+                        android:id="@+id/no_of_male_live_birth"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="14." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_female_live_birth" />
+
+                    <TextView
+                        android:id="@+id/no_of_female_live_birth"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="15." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_lbw_for_live_births" />
+
+                    <TextView
+                        android:id="@+id/no_of_lbw_for_live_births"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="16." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_normal_weight_babies_live_birth" />
+
+                    <TextView
+                        android:id="@+id/no_of_normal_weight_babies_live_birth"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="17." />
+
+                    <TextView
+                        android:id="@+id/textView"
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_babies_given_newborn_resuscitation" />
+
+                    <TextView
+                        android:id="@+id/no_of_babies_given_newborn_resuscitation"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="18." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_babies_initiated_breastfeeding_within_one_hour" />
+
+                    <TextView
+                        android:id="@+id/no_of_babies_initiated_breastfeeding_within_one_hour"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="19." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_live_births_immunized_for_bcg" />
+
+                    <TextView
+                        android:id="@+id/no_of_live_births_immunized_for_bcg"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="20." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_live_births_immunized_for_opv" />
+
+                    <TextView
+                        android:id="@+id/no_of_live_births_immunized_for_opv"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="21." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_live_births_immunized_for_hepb" />
+
+                    <TextView
+                        android:id="@+id/no_of_live_births_immunized_for_hepb"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="22." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_still_births" />
+
+                    <TextView
+                        android:id="@+id/no_of_still_births"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="23." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_male_still_birth" />
+
+                    <TextView
+                        android:id="@+id/no_of_male_still_birth"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="24." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_female_still_birth" />
+
+                    <TextView
+                        android:id="@+id/no_of_female_still_birth"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="25." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_lbw_for_still_births" />
+
+                    <TextView
+                        android:id="@+id/no_of_lbw_for_still_births"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="26." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_normal_weight_babies_still_birth" />
+
+                    <TextView
+                        android:id="@+id/no_of_normal_weight_babies_still_birth"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="27." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_fresh_still_births" />
+
+                    <TextView
+                        android:id="@+id/no_of_fresh_still_births"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="28." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_macerated_still_births" />
+
+                    <TextView
+                        android:id="@+id/no_of_macerated_still_births"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="29." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_mothers_discharged_before_fourtyeight_hours" />
+
+                    <TextView
+                        android:id="@+id/no_of_mothers_discharged_before_fourtyeight_hours"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="30." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_mothers_discharged_after_fourtyeight_hours" />
+
+                    <TextView
+                        android:id="@+id/no_of_mothers_discharged_after_fourtyeight_hours"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="31." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_pnc_cases_with_ppiucd_inserted" />
+
+                    <TextView
+                        android:id="@+id/no_of_pnc_cases_with_ppiucd_inserted"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="32." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_cases_referred_in" />
+
+                    <TextView
+                        android:id="@+id/no_of_cases_referred_in"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="33." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_cases_referred_out" />
+
+                    <TextView
+                        android:id="@+id/no_of_cases_referred_out"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="34." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_maternal_deaths" />
+
+                    <TextView
+                        android:id="@+id/no_of_maternal_deaths"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="35." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_cases_referred_out_child" />
+
+                    <TextView
+                        android:id="@+id/no_of_cases_referred_out_child"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:paddingLeft="10sp"
+                        android:text="36." />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/no_of_newborn_deaths" />
+
+                    <TextView
+                        android:id="@+id/no_of_newborn_deaths"
+                        style="@style/CustomTextStyle"
+                        android:layout_marginLeft="5sp"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

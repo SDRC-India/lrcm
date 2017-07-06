@@ -1,0 +1,931 @@
+package io.realm;
+
+
+import android.annotation.TargetApi;
+import android.os.Build;
+import android.util.JsonReader;
+import android.util.JsonToken;
+import io.realm.RealmObjectSchema;
+import io.realm.RealmSchema;
+import io.realm.exceptions.RealmMigrationNeededException;
+import io.realm.internal.ColumnInfo;
+import io.realm.internal.LinkView;
+import io.realm.internal.RealmObjectProxy;
+import io.realm.internal.Row;
+import io.realm.internal.SharedRealm;
+import io.realm.internal.Table;
+import io.realm.internal.TableOrView;
+import io.realm.internal.android.JsonUtils;
+import io.realm.log.RealmLog;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class UserRealmProxy extends org.sdrc.lrcasemanagement.model.realmmodel.User
+    implements RealmObjectProxy, UserRealmProxyInterface {
+
+    static final class UserColumnInfo extends ColumnInfo
+        implements Cloneable {
+
+        public long idIndex;
+        public long usernameIndex;
+        public long passwordIndex;
+        public long nameIndex;
+        public long areaIndex;
+
+        UserColumnInfo(String path, Table table) {
+            final Map<String, Long> indicesMap = new HashMap<String, Long>(5);
+            this.idIndex = getValidColumnIndex(path, table, "User", "id");
+            indicesMap.put("id", this.idIndex);
+            this.usernameIndex = getValidColumnIndex(path, table, "User", "username");
+            indicesMap.put("username", this.usernameIndex);
+            this.passwordIndex = getValidColumnIndex(path, table, "User", "password");
+            indicesMap.put("password", this.passwordIndex);
+            this.nameIndex = getValidColumnIndex(path, table, "User", "name");
+            indicesMap.put("name", this.nameIndex);
+            this.areaIndex = getValidColumnIndex(path, table, "User", "area");
+            indicesMap.put("area", this.areaIndex);
+
+            setIndicesMap(indicesMap);
+        }
+
+        @Override
+        public final void copyColumnInfoFrom(ColumnInfo other) {
+            final UserColumnInfo otherInfo = (UserColumnInfo) other;
+            this.idIndex = otherInfo.idIndex;
+            this.usernameIndex = otherInfo.usernameIndex;
+            this.passwordIndex = otherInfo.passwordIndex;
+            this.nameIndex = otherInfo.nameIndex;
+            this.areaIndex = otherInfo.areaIndex;
+
+            setIndicesMap(otherInfo.getIndicesMap());
+        }
+
+        @Override
+        public final UserColumnInfo clone() {
+            return (UserColumnInfo) super.clone();
+        }
+
+    }
+    private UserColumnInfo columnInfo;
+    private ProxyState proxyState;
+    private static final List<String> FIELD_NAMES;
+    static {
+        List<String> fieldNames = new ArrayList<String>();
+        fieldNames.add("id");
+        fieldNames.add("username");
+        fieldNames.add("password");
+        fieldNames.add("name");
+        fieldNames.add("area");
+        FIELD_NAMES = Collections.unmodifiableList(fieldNames);
+    }
+
+    UserRealmProxy() {
+        if (proxyState == null) {
+            injectObjectContext();
+        }
+        proxyState.setConstructionFinished();
+    }
+
+    private void injectObjectContext() {
+        final BaseRealm.RealmObjectContext context = BaseRealm.objectContext.get();
+        this.columnInfo = (UserColumnInfo) context.getColumnInfo();
+        this.proxyState = new ProxyState(org.sdrc.lrcasemanagement.model.realmmodel.User.class, this);
+        proxyState.setRealm$realm(context.getRealm());
+        proxyState.setRow$realm(context.getRow());
+        proxyState.setAcceptDefaultValue$realm(context.getAcceptDefaultValue());
+        proxyState.setExcludeFields$realm(context.getExcludeFields());
+    }
+
+    @SuppressWarnings("cast")
+    public int realmGet$id() {
+        if (proxyState == null) {
+            // Called from model's constructor. Inject context.
+            injectObjectContext();
+        }
+
+        proxyState.getRealm$realm().checkIfValid();
+        return (int) proxyState.getRow$realm().getLong(columnInfo.idIndex);
+    }
+
+    public void realmSet$id(int value) {
+        if (proxyState == null) {
+            // Called from model's constructor. Inject context.
+            injectObjectContext();
+        }
+
+        if (proxyState.isUnderConstruction()) {
+            // default value of the primary key is always ignored.
+            return;
+        }
+
+        proxyState.getRealm$realm().checkIfValid();
+        throw new io.realm.exceptions.RealmException("Primary key field 'id' cannot be changed after object was created.");
+    }
+
+    @SuppressWarnings("cast")
+    public String realmGet$username() {
+        if (proxyState == null) {
+            // Called from model's constructor. Inject context.
+            injectObjectContext();
+        }
+
+        proxyState.getRealm$realm().checkIfValid();
+        return (java.lang.String) proxyState.getRow$realm().getString(columnInfo.usernameIndex);
+    }
+
+    public void realmSet$username(String value) {
+        if (proxyState == null) {
+            // Called from model's constructor. Inject context.
+            injectObjectContext();
+        }
+
+        if (proxyState.isUnderConstruction()) {
+            if (!proxyState.getAcceptDefaultValue$realm()) {
+                return;
+            }
+            final Row row = proxyState.getRow$realm();
+            if (value == null) {
+                row.getTable().setNull(columnInfo.usernameIndex, row.getIndex(), true);
+                return;
+            }
+            row.getTable().setString(columnInfo.usernameIndex, row.getIndex(), value, true);
+            return;
+        }
+
+        proxyState.getRealm$realm().checkIfValid();
+        if (value == null) {
+            proxyState.getRow$realm().setNull(columnInfo.usernameIndex);
+            return;
+        }
+        proxyState.getRow$realm().setString(columnInfo.usernameIndex, value);
+    }
+
+    @SuppressWarnings("cast")
+    public String realmGet$password() {
+        if (proxyState == null) {
+            // Called from model's constructor. Inject context.
+            injectObjectContext();
+        }
+
+        proxyState.getRealm$realm().checkIfValid();
+        return (java.lang.String) proxyState.getRow$realm().getString(columnInfo.passwordIndex);
+    }
+
+    public void realmSet$password(String value) {
+        if (proxyState == null) {
+            // Called from model's constructor. Inject context.
+            injectObjectContext();
+        }
+
+        if (proxyState.isUnderConstruction()) {
+            if (!proxyState.getAcceptDefaultValue$realm()) {
+                return;
+            }
+            final Row row = proxyState.getRow$realm();
+            if (value == null) {
+                row.getTable().setNull(columnInfo.passwordIndex, row.getIndex(), true);
+                return;
+            }
+            row.getTable().setString(columnInfo.passwordIndex, row.getIndex(), value, true);
+            return;
+        }
+
+        proxyState.getRealm$realm().checkIfValid();
+        if (value == null) {
+            proxyState.getRow$realm().setNull(columnInfo.passwordIndex);
+            return;
+        }
+        proxyState.getRow$realm().setString(columnInfo.passwordIndex, value);
+    }
+
+    @SuppressWarnings("cast")
+    public String realmGet$name() {
+        if (proxyState == null) {
+            // Called from model's constructor. Inject context.
+            injectObjectContext();
+        }
+
+        proxyState.getRealm$realm().checkIfValid();
+        return (java.lang.String) proxyState.getRow$realm().getString(columnInfo.nameIndex);
+    }
+
+    public void realmSet$name(String value) {
+        if (proxyState == null) {
+            // Called from model's constructor. Inject context.
+            injectObjectContext();
+        }
+
+        if (proxyState.isUnderConstruction()) {
+            if (!proxyState.getAcceptDefaultValue$realm()) {
+                return;
+            }
+            final Row row = proxyState.getRow$realm();
+            if (value == null) {
+                row.getTable().setNull(columnInfo.nameIndex, row.getIndex(), true);
+                return;
+            }
+            row.getTable().setString(columnInfo.nameIndex, row.getIndex(), value, true);
+            return;
+        }
+
+        proxyState.getRealm$realm().checkIfValid();
+        if (value == null) {
+            proxyState.getRow$realm().setNull(columnInfo.nameIndex);
+            return;
+        }
+        proxyState.getRow$realm().setString(columnInfo.nameIndex, value);
+    }
+
+    public org.sdrc.lrcasemanagement.model.realmmodel.Area realmGet$area() {
+        if (proxyState == null) {
+            // Called from model's constructor. Inject context.
+            injectObjectContext();
+        }
+
+        proxyState.getRealm$realm().checkIfValid();
+        if (proxyState.getRow$realm().isNullLink(columnInfo.areaIndex)) {
+            return null;
+        }
+        return proxyState.getRealm$realm().get(org.sdrc.lrcasemanagement.model.realmmodel.Area.class, proxyState.getRow$realm().getLink(columnInfo.areaIndex), false, Collections.<String>emptyList());
+    }
+
+    public void realmSet$area(org.sdrc.lrcasemanagement.model.realmmodel.Area value) {
+        if (proxyState == null) {
+            // Called from model's constructor. Inject context.
+            injectObjectContext();
+        }
+
+        if (proxyState.isUnderConstruction()) {
+            if (!proxyState.getAcceptDefaultValue$realm()) {
+                return;
+            }
+            if (proxyState.getExcludeFields$realm().contains("area")) {
+                return;
+            }
+            if (value != null && !RealmObject.isManaged(value)) {
+                value = ((Realm) proxyState.getRealm$realm()).copyToRealm(value);
+            }
+            final Row row = proxyState.getRow$realm();
+            if (value == null) {
+                // Table#nullifyLink() does not support default value. Just using Row.
+                row.nullifyLink(columnInfo.areaIndex);
+                return;
+            }
+            if (!RealmObject.isValid(value)) {
+                throw new IllegalArgumentException("'value' is not a valid managed object.");
+            }
+            if (((RealmObjectProxy) value).realmGet$proxyState().getRealm$realm() != proxyState.getRealm$realm()) {
+                throw new IllegalArgumentException("'value' belongs to a different Realm.");
+            }
+            row.getTable().setLink(columnInfo.areaIndex, row.getIndex(), ((RealmObjectProxy) value).realmGet$proxyState().getRow$realm().getIndex(), true);
+            return;
+        }
+
+        proxyState.getRealm$realm().checkIfValid();
+        if (value == null) {
+            proxyState.getRow$realm().nullifyLink(columnInfo.areaIndex);
+            return;
+        }
+        if (!(RealmObject.isManaged(value) && RealmObject.isValid(value))) {
+            throw new IllegalArgumentException("'value' is not a valid managed object.");
+        }
+        if (((RealmObjectProxy)value).realmGet$proxyState().getRealm$realm() != proxyState.getRealm$realm()) {
+            throw new IllegalArgumentException("'value' belongs to a different Realm.");
+        }
+        proxyState.getRow$realm().setLink(columnInfo.areaIndex, ((RealmObjectProxy)value).realmGet$proxyState().getRow$realm().getIndex());
+    }
+
+    public static RealmObjectSchema createRealmObjectSchema(RealmSchema realmSchema) {
+        if (!realmSchema.contains("User")) {
+            RealmObjectSchema realmObjectSchema = realmSchema.create("User");
+            realmObjectSchema.add(new Property("id", RealmFieldType.INTEGER, Property.PRIMARY_KEY, Property.INDEXED, Property.REQUIRED));
+            realmObjectSchema.add(new Property("username", RealmFieldType.STRING, !Property.PRIMARY_KEY, !Property.INDEXED, !Property.REQUIRED));
+            realmObjectSchema.add(new Property("password", RealmFieldType.STRING, !Property.PRIMARY_KEY, !Property.INDEXED, !Property.REQUIRED));
+            realmObjectSchema.add(new Property("name", RealmFieldType.STRING, !Property.PRIMARY_KEY, !Property.INDEXED, !Property.REQUIRED));
+            if (!realmSchema.contains("Area")) {
+                AreaRealmProxy.createRealmObjectSchema(realmSchema);
+            }
+            realmObjectSchema.add(new Property("area", RealmFieldType.OBJECT, realmSchema.get("Area")));
+            return realmObjectSchema;
+        }
+        return realmSchema.get("User");
+    }
+
+    public static Table initTable(SharedRealm sharedRealm) {
+        if (!sharedRealm.hasTable("class_User")) {
+            Table table = sharedRealm.getTable("class_User");
+            table.addColumn(RealmFieldType.INTEGER, "id", Table.NOT_NULLABLE);
+            table.addColumn(RealmFieldType.STRING, "username", Table.NULLABLE);
+            table.addColumn(RealmFieldType.STRING, "password", Table.NULLABLE);
+            table.addColumn(RealmFieldType.STRING, "name", Table.NULLABLE);
+            if (!sharedRealm.hasTable("class_Area")) {
+                AreaRealmProxy.initTable(sharedRealm);
+            }
+            table.addColumnLink(RealmFieldType.OBJECT, "area", sharedRealm.getTable("class_Area"));
+            table.addSearchIndex(table.getColumnIndex("id"));
+            table.setPrimaryKey("id");
+            return table;
+        }
+        return sharedRealm.getTable("class_User");
+    }
+
+    public static UserColumnInfo validateTable(SharedRealm sharedRealm, boolean allowExtraColumns) {
+        if (sharedRealm.hasTable("class_User")) {
+            Table table = sharedRealm.getTable("class_User");
+            final long columnCount = table.getColumnCount();
+            if (columnCount != 5) {
+                if (columnCount < 5) {
+                    throw new RealmMigrationNeededException(sharedRealm.getPath(), "Field count is less than expected - expected 5 but was " + columnCount);
+                }
+                if (allowExtraColumns) {
+                    RealmLog.debug("Field count is more than expected - expected 5 but was %1$d", columnCount);
+                } else {
+                    throw new RealmMigrationNeededException(sharedRealm.getPath(), "Field count is more than expected - expected 5 but was " + columnCount);
+                }
+            }
+            Map<String, RealmFieldType> columnTypes = new HashMap<String, RealmFieldType>();
+            for (long i = 0; i < columnCount; i++) {
+                columnTypes.put(table.getColumnName(i), table.getColumnType(i));
+            }
+
+            final UserColumnInfo columnInfo = new UserColumnInfo(sharedRealm.getPath(), table);
+
+            if (!columnTypes.containsKey("id")) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Missing field 'id' in existing Realm file. Either remove field or migrate using io.realm.internal.Table.addColumn().");
+            }
+            if (columnTypes.get("id") != RealmFieldType.INTEGER) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Invalid type 'int' for field 'id' in existing Realm file.");
+            }
+            if (table.isColumnNullable(columnInfo.idIndex) && table.findFirstNull(columnInfo.idIndex) != TableOrView.NO_MATCH) {
+                throw new IllegalStateException("Cannot migrate an object with null value in field 'id'. Either maintain the same type for primary key field 'id', or remove the object with null value before migration.");
+            }
+            if (table.getPrimaryKey() != table.getColumnIndex("id")) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Primary key not defined for field 'id' in existing Realm file. Add @PrimaryKey.");
+            }
+            if (!table.hasSearchIndex(table.getColumnIndex("id"))) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Index not defined for field 'id' in existing Realm file. Either set @Index or migrate using io.realm.internal.Table.removeSearchIndex().");
+            }
+            if (!columnTypes.containsKey("username")) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Missing field 'username' in existing Realm file. Either remove field or migrate using io.realm.internal.Table.addColumn().");
+            }
+            if (columnTypes.get("username") != RealmFieldType.STRING) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Invalid type 'String' for field 'username' in existing Realm file.");
+            }
+            if (!table.isColumnNullable(columnInfo.usernameIndex)) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Field 'username' is required. Either set @Required to field 'username' or migrate using RealmObjectSchema.setNullable().");
+            }
+            if (!columnTypes.containsKey("password")) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Missing field 'password' in existing Realm file. Either remove field or migrate using io.realm.internal.Table.addColumn().");
+            }
+            if (columnTypes.get("password") != RealmFieldType.STRING) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Invalid type 'String' for field 'password' in existing Realm file.");
+            }
+            if (!table.isColumnNullable(columnInfo.passwordIndex)) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Field 'password' is required. Either set @Required to field 'password' or migrate using RealmObjectSchema.setNullable().");
+            }
+            if (!columnTypes.containsKey("name")) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Missing field 'name' in existing Realm file. Either remove field or migrate using io.realm.internal.Table.addColumn().");
+            }
+            if (columnTypes.get("name") != RealmFieldType.STRING) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Invalid type 'String' for field 'name' in existing Realm file.");
+            }
+            if (!table.isColumnNullable(columnInfo.nameIndex)) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Field 'name' is required. Either set @Required to field 'name' or migrate using RealmObjectSchema.setNullable().");
+            }
+            if (!columnTypes.containsKey("area")) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Missing field 'area' in existing Realm file. Either remove field or migrate using io.realm.internal.Table.addColumn().");
+            }
+            if (columnTypes.get("area") != RealmFieldType.OBJECT) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Invalid type 'Area' for field 'area'");
+            }
+            if (!sharedRealm.hasTable("class_Area")) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Missing class 'class_Area' for field 'area'");
+            }
+            Table table_4 = sharedRealm.getTable("class_Area");
+            if (!table.getLinkTarget(columnInfo.areaIndex).hasSameSchema(table_4)) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Invalid RealmObject for field 'area': '" + table.getLinkTarget(columnInfo.areaIndex).getName() + "' expected - was '" + table_4.getName() + "'");
+            }
+            return columnInfo;
+        } else {
+            throw new RealmMigrationNeededException(sharedRealm.getPath(), "The 'User' class is missing from the schema for this Realm.");
+        }
+    }
+
+    public static String getTableName() {
+        return "class_User";
+    }
+
+    public static List<String> getFieldNames() {
+        return FIELD_NAMES;
+    }
+
+    @SuppressWarnings("cast")
+    public static org.sdrc.lrcasemanagement.model.realmmodel.User createOrUpdateUsingJsonObject(Realm realm, JSONObject json, boolean update)
+        throws JSONException {
+        final List<String> excludeFields = new ArrayList<String>(1);
+        org.sdrc.lrcasemanagement.model.realmmodel.User obj = null;
+        if (update) {
+            Table table = realm.getTable(org.sdrc.lrcasemanagement.model.realmmodel.User.class);
+            long pkColumnIndex = table.getPrimaryKey();
+            long rowIndex = TableOrView.NO_MATCH;
+            if (!json.isNull("id")) {
+                rowIndex = table.findFirstLong(pkColumnIndex, json.getLong("id"));
+            }
+            if (rowIndex != TableOrView.NO_MATCH) {
+                final BaseRealm.RealmObjectContext objectContext = BaseRealm.objectContext.get();
+                try {
+                    objectContext.set(realm, table.getUncheckedRow(rowIndex), realm.schema.getColumnInfo(org.sdrc.lrcasemanagement.model.realmmodel.User.class), false, Collections.<String> emptyList());
+                    obj = new io.realm.UserRealmProxy();
+                } finally {
+                    objectContext.clear();
+                }
+            }
+        }
+        if (obj == null) {
+            if (json.has("area")) {
+                excludeFields.add("area");
+            }
+            if (json.has("id")) {
+                if (json.isNull("id")) {
+                    obj = (io.realm.UserRealmProxy) realm.createObjectInternal(org.sdrc.lrcasemanagement.model.realmmodel.User.class, null, true, excludeFields);
+                } else {
+                    obj = (io.realm.UserRealmProxy) realm.createObjectInternal(org.sdrc.lrcasemanagement.model.realmmodel.User.class, json.getInt("id"), true, excludeFields);
+                }
+            } else {
+                throw new IllegalArgumentException("JSON object doesn't have the primary key field 'id'.");
+            }
+        }
+        if (json.has("username")) {
+            if (json.isNull("username")) {
+                ((UserRealmProxyInterface) obj).realmSet$username(null);
+            } else {
+                ((UserRealmProxyInterface) obj).realmSet$username((String) json.getString("username"));
+            }
+        }
+        if (json.has("password")) {
+            if (json.isNull("password")) {
+                ((UserRealmProxyInterface) obj).realmSet$password(null);
+            } else {
+                ((UserRealmProxyInterface) obj).realmSet$password((String) json.getString("password"));
+            }
+        }
+        if (json.has("name")) {
+            if (json.isNull("name")) {
+                ((UserRealmProxyInterface) obj).realmSet$name(null);
+            } else {
+                ((UserRealmProxyInterface) obj).realmSet$name((String) json.getString("name"));
+            }
+        }
+        if (json.has("area")) {
+            if (json.isNull("area")) {
+                ((UserRealmProxyInterface) obj).realmSet$area(null);
+            } else {
+                org.sdrc.lrcasemanagement.model.realmmodel.Area areaObj = AreaRealmProxy.createOrUpdateUsingJsonObject(realm, json.getJSONObject("area"), update);
+                ((UserRealmProxyInterface) obj).realmSet$area(areaObj);
+            }
+        }
+        return obj;
+    }
+
+    @SuppressWarnings("cast")
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static org.sdrc.lrcasemanagement.model.realmmodel.User createUsingJsonStream(Realm realm, JsonReader reader)
+        throws IOException {
+        boolean jsonHasPrimaryKey = false;
+        org.sdrc.lrcasemanagement.model.realmmodel.User obj = new org.sdrc.lrcasemanagement.model.realmmodel.User();
+        reader.beginObject();
+        while (reader.hasNext()) {
+            String name = reader.nextName();
+            if (name.equals("id")) {
+                if (reader.peek() == JsonToken.NULL) {
+                    reader.skipValue();
+                    throw new IllegalArgumentException("Trying to set non-nullable field 'id' to null.");
+                } else {
+                    ((UserRealmProxyInterface) obj).realmSet$id((int) reader.nextInt());
+                }
+                jsonHasPrimaryKey = true;
+            } else if (name.equals("username")) {
+                if (reader.peek() == JsonToken.NULL) {
+                    reader.skipValue();
+                    ((UserRealmProxyInterface) obj).realmSet$username(null);
+                } else {
+                    ((UserRealmProxyInterface) obj).realmSet$username((String) reader.nextString());
+                }
+            } else if (name.equals("password")) {
+                if (reader.peek() == JsonToken.NULL) {
+                    reader.skipValue();
+                    ((UserRealmProxyInterface) obj).realmSet$password(null);
+                } else {
+                    ((UserRealmProxyInterface) obj).realmSet$password((String) reader.nextString());
+                }
+            } else if (name.equals("name")) {
+                if (reader.peek() == JsonToken.NULL) {
+                    reader.skipValue();
+                    ((UserRealmProxyInterface) obj).realmSet$name(null);
+                } else {
+                    ((UserRealmProxyInterface) obj).realmSet$name((String) reader.nextString());
+                }
+            } else if (name.equals("area")) {
+                if (reader.peek() == JsonToken.NULL) {
+                    reader.skipValue();
+                    ((UserRealmProxyInterface) obj).realmSet$area(null);
+                } else {
+                    org.sdrc.lrcasemanagement.model.realmmodel.Area areaObj = AreaRealmProxy.createUsingJsonStream(realm, reader);
+                    ((UserRealmProxyInterface) obj).realmSet$area(areaObj);
+                }
+            } else {
+                reader.skipValue();
+            }
+        }
+        reader.endObject();
+        if (!jsonHasPrimaryKey) {
+            throw new IllegalArgumentException("JSON object doesn't have the primary key field 'id'.");
+        }
+        obj = realm.copyToRealm(obj);
+        return obj;
+    }
+
+    public static org.sdrc.lrcasemanagement.model.realmmodel.User copyOrUpdate(Realm realm, org.sdrc.lrcasemanagement.model.realmmodel.User object, boolean update, Map<RealmModel,RealmObjectProxy> cache) {
+        if (object instanceof RealmObjectProxy && ((RealmObjectProxy) object).realmGet$proxyState().getRealm$realm() != null && ((RealmObjectProxy) object).realmGet$proxyState().getRealm$realm().threadId != realm.threadId) {
+            throw new IllegalArgumentException("Objects which belong to Realm instances in other threads cannot be copied into this Realm instance.");
+        }
+        if (object instanceof RealmObjectProxy && ((RealmObjectProxy)object).realmGet$proxyState().getRealm$realm() != null && ((RealmObjectProxy)object).realmGet$proxyState().getRealm$realm().getPath().equals(realm.getPath())) {
+            return object;
+        }
+        final BaseRealm.RealmObjectContext objectContext = BaseRealm.objectContext.get();
+        RealmObjectProxy cachedRealmObject = cache.get(object);
+        if (cachedRealmObject != null) {
+            return (org.sdrc.lrcasemanagement.model.realmmodel.User) cachedRealmObject;
+        } else {
+            org.sdrc.lrcasemanagement.model.realmmodel.User realmObject = null;
+            boolean canUpdate = update;
+            if (canUpdate) {
+                Table table = realm.getTable(org.sdrc.lrcasemanagement.model.realmmodel.User.class);
+                long pkColumnIndex = table.getPrimaryKey();
+                long rowIndex = table.findFirstLong(pkColumnIndex, ((UserRealmProxyInterface) object).realmGet$id());
+                if (rowIndex != TableOrView.NO_MATCH) {
+                    try {
+                        objectContext.set(realm, table.getUncheckedRow(rowIndex), realm.schema.getColumnInfo(org.sdrc.lrcasemanagement.model.realmmodel.User.class), false, Collections.<String> emptyList());
+                        realmObject = new io.realm.UserRealmProxy();
+                        cache.put(object, (RealmObjectProxy) realmObject);
+                    } finally {
+                        objectContext.clear();
+                    }
+                } else {
+                    canUpdate = false;
+                }
+            }
+
+            if (canUpdate) {
+                return update(realm, realmObject, object, cache);
+            } else {
+                return copy(realm, object, update, cache);
+            }
+        }
+    }
+
+    public static org.sdrc.lrcasemanagement.model.realmmodel.User copy(Realm realm, org.sdrc.lrcasemanagement.model.realmmodel.User newObject, boolean update, Map<RealmModel,RealmObjectProxy> cache) {
+        RealmObjectProxy cachedRealmObject = cache.get(newObject);
+        if (cachedRealmObject != null) {
+            return (org.sdrc.lrcasemanagement.model.realmmodel.User) cachedRealmObject;
+        } else {
+            // rejecting default values to avoid creating unexpected objects from RealmModel/RealmList fields.
+            org.sdrc.lrcasemanagement.model.realmmodel.User realmObject = realm.createObjectInternal(org.sdrc.lrcasemanagement.model.realmmodel.User.class, ((UserRealmProxyInterface) newObject).realmGet$id(), false, Collections.<String>emptyList());
+            cache.put(newObject, (RealmObjectProxy) realmObject);
+            ((UserRealmProxyInterface) realmObject).realmSet$username(((UserRealmProxyInterface) newObject).realmGet$username());
+            ((UserRealmProxyInterface) realmObject).realmSet$password(((UserRealmProxyInterface) newObject).realmGet$password());
+            ((UserRealmProxyInterface) realmObject).realmSet$name(((UserRealmProxyInterface) newObject).realmGet$name());
+
+            org.sdrc.lrcasemanagement.model.realmmodel.Area areaObj = ((UserRealmProxyInterface) newObject).realmGet$area();
+            if (areaObj != null) {
+                org.sdrc.lrcasemanagement.model.realmmodel.Area cachearea = (org.sdrc.lrcasemanagement.model.realmmodel.Area) cache.get(areaObj);
+                if (cachearea != null) {
+                    ((UserRealmProxyInterface) realmObject).realmSet$area(cachearea);
+                } else {
+                    ((UserRealmProxyInterface) realmObject).realmSet$area(AreaRealmProxy.copyOrUpdate(realm, areaObj, update, cache));
+                }
+            } else {
+                ((UserRealmProxyInterface) realmObject).realmSet$area(null);
+            }
+            return realmObject;
+        }
+    }
+
+    public static long insert(Realm realm, org.sdrc.lrcasemanagement.model.realmmodel.User object, Map<RealmModel,Long> cache) {
+        if (object instanceof RealmObjectProxy && ((RealmObjectProxy)object).realmGet$proxyState().getRealm$realm() != null && ((RealmObjectProxy)object).realmGet$proxyState().getRealm$realm().getPath().equals(realm.getPath())) {
+            return ((RealmObjectProxy)object).realmGet$proxyState().getRow$realm().getIndex();
+        }
+        Table table = realm.getTable(org.sdrc.lrcasemanagement.model.realmmodel.User.class);
+        long tableNativePtr = table.getNativeTablePointer();
+        UserColumnInfo columnInfo = (UserColumnInfo) realm.schema.getColumnInfo(org.sdrc.lrcasemanagement.model.realmmodel.User.class);
+        long pkColumnIndex = table.getPrimaryKey();
+        long rowIndex = TableOrView.NO_MATCH;
+        Object primaryKeyValue = ((UserRealmProxyInterface) object).realmGet$id();
+        if (primaryKeyValue != null) {
+            rowIndex = Table.nativeFindFirstInt(tableNativePtr, pkColumnIndex, ((UserRealmProxyInterface) object).realmGet$id());
+        }
+        if (rowIndex == TableOrView.NO_MATCH) {
+            rowIndex = table.addEmptyRowWithPrimaryKey(((UserRealmProxyInterface) object).realmGet$id(), false);
+        } else {
+            Table.throwDuplicatePrimaryKeyException(primaryKeyValue);
+        }
+        cache.put(object, rowIndex);
+        String realmGet$username = ((UserRealmProxyInterface)object).realmGet$username();
+        if (realmGet$username != null) {
+            Table.nativeSetString(tableNativePtr, columnInfo.usernameIndex, rowIndex, realmGet$username, false);
+        }
+        String realmGet$password = ((UserRealmProxyInterface)object).realmGet$password();
+        if (realmGet$password != null) {
+            Table.nativeSetString(tableNativePtr, columnInfo.passwordIndex, rowIndex, realmGet$password, false);
+        }
+        String realmGet$name = ((UserRealmProxyInterface)object).realmGet$name();
+        if (realmGet$name != null) {
+            Table.nativeSetString(tableNativePtr, columnInfo.nameIndex, rowIndex, realmGet$name, false);
+        }
+
+        org.sdrc.lrcasemanagement.model.realmmodel.Area areaObj = ((UserRealmProxyInterface) object).realmGet$area();
+        if (areaObj != null) {
+            Long cachearea = cache.get(areaObj);
+            if (cachearea == null) {
+                cachearea = AreaRealmProxy.insert(realm, areaObj, cache);
+            }
+            Table.nativeSetLink(tableNativePtr, columnInfo.areaIndex, rowIndex, cachearea, false);
+        }
+        return rowIndex;
+    }
+
+    public static void insert(Realm realm, Iterator<? extends RealmModel> objects, Map<RealmModel,Long> cache) {
+        Table table = realm.getTable(org.sdrc.lrcasemanagement.model.realmmodel.User.class);
+        long tableNativePtr = table.getNativeTablePointer();
+        UserColumnInfo columnInfo = (UserColumnInfo) realm.schema.getColumnInfo(org.sdrc.lrcasemanagement.model.realmmodel.User.class);
+        long pkColumnIndex = table.getPrimaryKey();
+        org.sdrc.lrcasemanagement.model.realmmodel.User object = null;
+        while (objects.hasNext()) {
+            object = (org.sdrc.lrcasemanagement.model.realmmodel.User) objects.next();
+            if(!cache.containsKey(object)) {
+                if (object instanceof RealmObjectProxy && ((RealmObjectProxy)object).realmGet$proxyState().getRealm$realm() != null && ((RealmObjectProxy)object).realmGet$proxyState().getRealm$realm().getPath().equals(realm.getPath())) {
+                    cache.put(object, ((RealmObjectProxy)object).realmGet$proxyState().getRow$realm().getIndex());
+                    continue;
+                }
+                long rowIndex = TableOrView.NO_MATCH;
+                Object primaryKeyValue = ((UserRealmProxyInterface) object).realmGet$id();
+                if (primaryKeyValue != null) {
+                    rowIndex = Table.nativeFindFirstInt(tableNativePtr, pkColumnIndex, ((UserRealmProxyInterface) object).realmGet$id());
+                }
+                if (rowIndex == TableOrView.NO_MATCH) {
+                    rowIndex = table.addEmptyRowWithPrimaryKey(((UserRealmProxyInterface) object).realmGet$id(), false);
+                } else {
+                    Table.throwDuplicatePrimaryKeyException(primaryKeyValue);
+                }
+                cache.put(object, rowIndex);
+                String realmGet$username = ((UserRealmProxyInterface)object).realmGet$username();
+                if (realmGet$username != null) {
+                    Table.nativeSetString(tableNativePtr, columnInfo.usernameIndex, rowIndex, realmGet$username, false);
+                }
+                String realmGet$password = ((UserRealmProxyInterface)object).realmGet$password();
+                if (realmGet$password != null) {
+                    Table.nativeSetString(tableNativePtr, columnInfo.passwordIndex, rowIndex, realmGet$password, false);
+                }
+                String realmGet$name = ((UserRealmProxyInterface)object).realmGet$name();
+                if (realmGet$name != null) {
+                    Table.nativeSetString(tableNativePtr, columnInfo.nameIndex, rowIndex, realmGet$name, false);
+                }
+
+                org.sdrc.lrcasemanagement.model.realmmodel.Area areaObj = ((UserRealmProxyInterface) object).realmGet$area();
+                if (areaObj != null) {
+                    Long cachearea = cache.get(areaObj);
+                    if (cachearea == null) {
+                        cachearea = AreaRealmProxy.insert(realm, areaObj, cache);
+                    }
+                    table.setLink(columnInfo.areaIndex, rowIndex, cachearea, false);
+                }
+            }
+        }
+    }
+
+    public static long insertOrUpdate(Realm realm, org.sdrc.lrcasemanagement.model.realmmodel.User object, Map<RealmModel,Long> cache) {
+        if (object instanceof RealmObjectProxy && ((RealmObjectProxy)object).realmGet$proxyState().getRealm$realm() != null && ((RealmObjectProxy)object).realmGet$proxyState().getRealm$realm().getPath().equals(realm.getPath())) {
+            return ((RealmObjectProxy)object).realmGet$proxyState().getRow$realm().getIndex();
+        }
+        Table table = realm.getTable(org.sdrc.lrcasemanagement.model.realmmodel.User.class);
+        long tableNativePtr = table.getNativeTablePointer();
+        UserColumnInfo columnInfo = (UserColumnInfo) realm.schema.getColumnInfo(org.sdrc.lrcasemanagement.model.realmmodel.User.class);
+        long pkColumnIndex = table.getPrimaryKey();
+        long rowIndex = TableOrView.NO_MATCH;
+        Object primaryKeyValue = ((UserRealmProxyInterface) object).realmGet$id();
+        if (primaryKeyValue != null) {
+            rowIndex = Table.nativeFindFirstInt(tableNativePtr, pkColumnIndex, ((UserRealmProxyInterface) object).realmGet$id());
+        }
+        if (rowIndex == TableOrView.NO_MATCH) {
+            rowIndex = table.addEmptyRowWithPrimaryKey(((UserRealmProxyInterface) object).realmGet$id(), false);
+        }
+        cache.put(object, rowIndex);
+        String realmGet$username = ((UserRealmProxyInterface)object).realmGet$username();
+        if (realmGet$username != null) {
+            Table.nativeSetString(tableNativePtr, columnInfo.usernameIndex, rowIndex, realmGet$username, false);
+        } else {
+            Table.nativeSetNull(tableNativePtr, columnInfo.usernameIndex, rowIndex, false);
+        }
+        String realmGet$password = ((UserRealmProxyInterface)object).realmGet$password();
+        if (realmGet$password != null) {
+            Table.nativeSetString(tableNativePtr, columnInfo.passwordIndex, rowIndex, realmGet$password, false);
+        } else {
+            Table.nativeSetNull(tableNativePtr, columnInfo.passwordIndex, rowIndex, false);
+        }
+        String realmGet$name = ((UserRealmProxyInterface)object).realmGet$name();
+        if (realmGet$name != null) {
+            Table.nativeSetString(tableNativePtr, columnInfo.nameIndex, rowIndex, realmGet$name, false);
+        } else {
+            Table.nativeSetNull(tableNativePtr, columnInfo.nameIndex, rowIndex, false);
+        }
+
+        org.sdrc.lrcasemanagement.model.realmmodel.Area areaObj = ((UserRealmProxyInterface) object).realmGet$area();
+        if (areaObj != null) {
+            Long cachearea = cache.get(areaObj);
+            if (cachearea == null) {
+                cachearea = AreaRealmProxy.insertOrUpdate(realm, areaObj, cache);
+            }
+            Table.nativeSetLink(tableNativePtr, columnInfo.areaIndex, rowIndex, cachearea, false);
+        } else {
+            Table.nativeNullifyLink(tableNativePtr, columnInfo.areaIndex, rowIndex);
+        }
+        return rowIndex;
+    }
+
+    public static void insertOrUpdate(Realm realm, Iterator<? extends RealmModel> objects, Map<RealmModel,Long> cache) {
+        Table table = realm.getTable(org.sdrc.lrcasemanagement.model.realmmodel.User.class);
+        long tableNativePtr = table.getNativeTablePointer();
+        UserColumnInfo columnInfo = (UserColumnInfo) realm.schema.getColumnInfo(org.sdrc.lrcasemanagement.model.realmmodel.User.class);
+        long pkColumnIndex = table.getPrimaryKey();
+        org.sdrc.lrcasemanagement.model.realmmodel.User object = null;
+        while (objects.hasNext()) {
+            object = (org.sdrc.lrcasemanagement.model.realmmodel.User) objects.next();
+            if(!cache.containsKey(object)) {
+                if (object instanceof RealmObjectProxy && ((RealmObjectProxy)object).realmGet$proxyState().getRealm$realm() != null && ((RealmObjectProxy)object).realmGet$proxyState().getRealm$realm().getPath().equals(realm.getPath())) {
+                    cache.put(object, ((RealmObjectProxy)object).realmGet$proxyState().getRow$realm().getIndex());
+                    continue;
+                }
+                long rowIndex = TableOrView.NO_MATCH;
+                Object primaryKeyValue = ((UserRealmProxyInterface) object).realmGet$id();
+                if (primaryKeyValue != null) {
+                    rowIndex = Table.nativeFindFirstInt(tableNativePtr, pkColumnIndex, ((UserRealmProxyInterface) object).realmGet$id());
+                }
+                if (rowIndex == TableOrView.NO_MATCH) {
+                    rowIndex = table.addEmptyRowWithPrimaryKey(((UserRealmProxyInterface) object).realmGet$id(), false);
+                }
+                cache.put(object, rowIndex);
+                String realmGet$username = ((UserRealmProxyInterface)object).realmGet$username();
+                if (realmGet$username != null) {
+                    Table.nativeSetString(tableNativePtr, columnInfo.usernameIndex, rowIndex, realmGet$username, false);
+                } else {
+                    Table.nativeSetNull(tableNativePtr, columnInfo.usernameIndex, rowIndex, false);
+                }
+                String realmGet$password = ((UserRealmProxyInterface)object).realmGet$password();
+                if (realmGet$password != null) {
+                    Table.nativeSetString(tableNativePtr, columnInfo.passwordIndex, rowIndex, realmGet$password, false);
+                } else {
+                    Table.nativeSetNull(tableNativePtr, columnInfo.passwordIndex, rowIndex, false);
+                }
+                String realmGet$name = ((UserRealmProxyInterface)object).realmGet$name();
+                if (realmGet$name != null) {
+                    Table.nativeSetString(tableNativePtr, columnInfo.nameIndex, rowIndex, realmGet$name, false);
+                } else {
+                    Table.nativeSetNull(tableNativePtr, columnInfo.nameIndex, rowIndex, false);
+                }
+
+                org.sdrc.lrcasemanagement.model.realmmodel.Area areaObj = ((UserRealmProxyInterface) object).realmGet$area();
+                if (areaObj != null) {
+                    Long cachearea = cache.get(areaObj);
+                    if (cachearea == null) {
+                        cachearea = AreaRealmProxy.insertOrUpdate(realm, areaObj, cache);
+                    }
+                    Table.nativeSetLink(tableNativePtr, columnInfo.areaIndex, rowIndex, cachearea, false);
+                } else {
+                    Table.nativeNullifyLink(tableNativePtr, columnInfo.areaIndex, rowIndex);
+                }
+            }
+        }
+    }
+
+    public static org.sdrc.lrcasemanagement.model.realmmodel.User createDetachedCopy(org.sdrc.lrcasemanagement.model.realmmodel.User realmObject, int currentDepth, int maxDepth, Map<RealmModel, CacheData<RealmModel>> cache) {
+        if (currentDepth > maxDepth || realmObject == null) {
+            return null;
+        }
+        CacheData<RealmModel> cachedObject = cache.get(realmObject);
+        org.sdrc.lrcasemanagement.model.realmmodel.User unmanagedObject;
+        if (cachedObject != null) {
+            // Reuse cached object or recreate it because it was encountered at a lower depth.
+            if (currentDepth >= cachedObject.minDepth) {
+                return (org.sdrc.lrcasemanagement.model.realmmodel.User)cachedObject.object;
+            } else {
+                unmanagedObject = (org.sdrc.lrcasemanagement.model.realmmodel.User)cachedObject.object;
+                cachedObject.minDepth = currentDepth;
+            }
+        } else {
+            unmanagedObject = new org.sdrc.lrcasemanagement.model.realmmodel.User();
+            cache.put(realmObject, new RealmObjectProxy.CacheData(currentDepth, unmanagedObject));
+        }
+        ((UserRealmProxyInterface) unmanagedObject).realmSet$id(((UserRealmProxyInterface) realmObject).realmGet$id());
+        ((UserRealmProxyInterface) unmanagedObject).realmSet$username(((UserRealmProxyInterface) realmObject).realmGet$username());
+        ((UserRealmProxyInterface) unmanagedObject).realmSet$password(((UserRealmProxyInterface) realmObject).realmGet$password());
+        ((UserRealmProxyInterface) unmanagedObject).realmSet$name(((UserRealmProxyInterface) realmObject).realmGet$name());
+
+        // Deep copy of area
+        ((UserRealmProxyInterface) unmanagedObject).realmSet$area(AreaRealmProxy.createDetachedCopy(((UserRealmProxyInterface) realmObject).realmGet$area(), currentDepth + 1, maxDepth, cache));
+        return unmanagedObject;
+    }
+
+    static org.sdrc.lrcasemanagement.model.realmmodel.User update(Realm realm, org.sdrc.lrcasemanagement.model.realmmodel.User realmObject, org.sdrc.lrcasemanagement.model.realmmodel.User newObject, Map<RealmModel, RealmObjectProxy> cache) {
+        ((UserRealmProxyInterface) realmObject).realmSet$username(((UserRealmProxyInterface) newObject).realmGet$username());
+        ((UserRealmProxyInterface) realmObject).realmSet$password(((UserRealmProxyInterface) newObject).realmGet$password());
+        ((UserRealmProxyInterface) realmObject).realmSet$name(((UserRealmProxyInterface) newObject).realmGet$name());
+        org.sdrc.lrcasemanagement.model.realmmodel.Area areaObj = ((UserRealmProxyInterface) newObject).realmGet$area();
+        if (areaObj != null) {
+            org.sdrc.lrcasemanagement.model.realmmodel.Area cachearea = (org.sdrc.lrcasemanagement.model.realmmodel.Area) cache.get(areaObj);
+            if (cachearea != null) {
+                ((UserRealmProxyInterface) realmObject).realmSet$area(cachearea);
+            } else {
+                ((UserRealmProxyInterface) realmObject).realmSet$area(AreaRealmProxy.copyOrUpdate(realm, areaObj, true, cache));
+            }
+        } else {
+            ((UserRealmProxyInterface) realmObject).realmSet$area(null);
+        }
+        return realmObject;
+    }
+
+    @Override
+    public String toString() {
+        if (!RealmObject.isValid(this)) {
+            return "Invalid object";
+        }
+        StringBuilder stringBuilder = new StringBuilder("User = [");
+        stringBuilder.append("{id:");
+        stringBuilder.append(realmGet$id());
+        stringBuilder.append("}");
+        stringBuilder.append(",");
+        stringBuilder.append("{username:");
+        stringBuilder.append(realmGet$username() != null ? realmGet$username() : "null");
+        stringBuilder.append("}");
+        stringBuilder.append(",");
+        stringBuilder.append("{password:");
+        stringBuilder.append(realmGet$password() != null ? realmGet$password() : "null");
+        stringBuilder.append("}");
+        stringBuilder.append(",");
+        stringBuilder.append("{name:");
+        stringBuilder.append(realmGet$name() != null ? realmGet$name() : "null");
+        stringBuilder.append("}");
+        stringBuilder.append(",");
+        stringBuilder.append("{area:");
+        stringBuilder.append(realmGet$area() != null ? "Area" : "null");
+        stringBuilder.append("}");
+        stringBuilder.append("]");
+        return stringBuilder.toString();
+    }
+
+    @Override
+    public ProxyState realmGet$proxyState() {
+        return proxyState;
+    }
+
+    @Override
+    public int hashCode() {
+        String realmName = proxyState.getRealm$realm().getPath();
+        String tableName = proxyState.getRow$realm().getTable().getName();
+        long rowIndex = proxyState.getRow$realm().getIndex();
+
+        int result = 17;
+        result = 31 * result + ((realmName != null) ? realmName.hashCode() : 0);
+        result = 31 * result + ((tableName != null) ? tableName.hashCode() : 0);
+        result = 31 * result + (int) (rowIndex ^ (rowIndex >>> 32));
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserRealmProxy aUser = (UserRealmProxy)o;
+
+        String path = proxyState.getRealm$realm().getPath();
+        String otherPath = aUser.proxyState.getRealm$realm().getPath();
+        if (path != null ? !path.equals(otherPath) : otherPath != null) return false;
+
+        String tableName = proxyState.getRow$realm().getTable().getName();
+        String otherTableName = aUser.proxyState.getRow$realm().getTable().getName();
+        if (tableName != null ? !tableName.equals(otherTableName) : otherTableName != null) return false;
+
+        if (proxyState.getRow$realm().getIndex() != aUser.proxyState.getRow$realm().getIndex()) return false;
+
+        return true;
+    }
+
+}

@@ -1,0 +1,27 @@
+package io.realm;
+
+
+public interface DataRealmProxyInterface {
+    public int realmGet$id();
+    public void realmSet$id(int value);
+    public org.sdrc.lrcasemanagement.model.realmmodel.Patient realmGet$patient();
+    public void realmSet$patient(org.sdrc.lrcasemanagement.model.realmmodel.Patient value);
+    public org.sdrc.lrcasemanagement.model.realmmodel.Area realmGet$area();
+    public void realmSet$area(org.sdrc.lrcasemanagement.model.realmmodel.Area value);
+    public boolean realmGet$patientHadPreDeliveryInjection();
+    public void realmSet$patientHadPreDeliveryInjection(boolean value);
+    public boolean realmGet$patientHadPostDeliveryInjection();
+    public void realmSet$patientHadPostDeliveryInjection(boolean value);
+    public double realmGet$weightOfChildInKG();
+    public void realmSet$weightOfChildInKG(double value);
+    public java.util.Date realmGet$mrdDateAndTime();
+    public void realmSet$mrdDateAndTime(java.util.Date value);
+    public java.util.Date realmGet$dischargeDateAndTime();
+    public void realmSet$dischargeDateAndTime(java.util.Date value);
+    public java.util.Date realmGet$refferedDateAndTime();
+    public void realmSet$refferedDateAndTime(java.util.Date value);
+    public org.sdrc.lrcasemanagement.model.realmmodel.Area realmGet$refferedArea();
+    public void realmSet$refferedArea(org.sdrc.lrcasemanagement.model.realmmodel.Area value);
+    public java.util.Date realmGet$syncDate();
+    public void realmSet$syncDate(java.util.Date value);
+}

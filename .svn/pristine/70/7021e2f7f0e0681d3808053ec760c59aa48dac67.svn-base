@@ -1,0 +1,13 @@
+package io.realm;
+
+
+public interface AreaRealmProxyInterface {
+    public int realmGet$id();
+    public void realmSet$id(int value);
+    public String realmGet$name();
+    public void realmSet$name(String value);
+    public int realmGet$parentAreaId();
+    public void realmSet$parentAreaId(int value);
+    public int realmGet$level();
+    public void realmSet$level(int value);
+}

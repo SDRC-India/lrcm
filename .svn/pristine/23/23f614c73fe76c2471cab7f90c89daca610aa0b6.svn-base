@@ -1,0 +1,841 @@
+package io.realm;
+
+
+import android.annotation.TargetApi;
+import android.os.Build;
+import android.util.JsonReader;
+import android.util.JsonToken;
+import io.realm.RealmObjectSchema;
+import io.realm.RealmSchema;
+import io.realm.exceptions.RealmMigrationNeededException;
+import io.realm.internal.ColumnInfo;
+import io.realm.internal.LinkView;
+import io.realm.internal.RealmObjectProxy;
+import io.realm.internal.Row;
+import io.realm.internal.SharedRealm;
+import io.realm.internal.Table;
+import io.realm.internal.TableOrView;
+import io.realm.internal.android.JsonUtils;
+import io.realm.log.RealmLog;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class PatientRealmProxy extends org.sdrc.lrcasemanagement.model.realmmodel.Patient
+    implements RealmObjectProxy, PatientRealmProxyInterface {
+
+    static final class PatientColumnInfo extends ColumnInfo
+        implements Cloneable {
+
+        public long idIndex;
+        public long nameIndex;
+        public long ageIndex;
+        public long mctsNoIndex;
+        public long dateOfAdmissionIndex;
+
+        PatientColumnInfo(String path, Table table) {
+            final Map<String, Long> indicesMap = new HashMap<String, Long>(5);
+            this.idIndex = getValidColumnIndex(path, table, "Patient", "id");
+            indicesMap.put("id", this.idIndex);
+            this.nameIndex = getValidColumnIndex(path, table, "Patient", "name");
+            indicesMap.put("name", this.nameIndex);
+            this.ageIndex = getValidColumnIndex(path, table, "Patient", "age");
+            indicesMap.put("age", this.ageIndex);
+            this.mctsNoIndex = getValidColumnIndex(path, table, "Patient", "mctsNo");
+            indicesMap.put("mctsNo", this.mctsNoIndex);
+            this.dateOfAdmissionIndex = getValidColumnIndex(path, table, "Patient", "dateOfAdmission");
+            indicesMap.put("dateOfAdmission", this.dateOfAdmissionIndex);
+
+            setIndicesMap(indicesMap);
+        }
+
+        @Override
+        public final void copyColumnInfoFrom(ColumnInfo other) {
+            final PatientColumnInfo otherInfo = (PatientColumnInfo) other;
+            this.idIndex = otherInfo.idIndex;
+            this.nameIndex = otherInfo.nameIndex;
+            this.ageIndex = otherInfo.ageIndex;
+            this.mctsNoIndex = otherInfo.mctsNoIndex;
+            this.dateOfAdmissionIndex = otherInfo.dateOfAdmissionIndex;
+
+            setIndicesMap(otherInfo.getIndicesMap());
+        }
+
+        @Override
+        public final PatientColumnInfo clone() {
+            return (PatientColumnInfo) super.clone();
+        }
+
+    }
+    private PatientColumnInfo columnInfo;
+    private ProxyState proxyState;
+    private static final List<String> FIELD_NAMES;
+    static {
+        List<String> fieldNames = new ArrayList<String>();
+        fieldNames.add("id");
+        fieldNames.add("name");
+        fieldNames.add("age");
+        fieldNames.add("mctsNo");
+        fieldNames.add("dateOfAdmission");
+        FIELD_NAMES = Collections.unmodifiableList(fieldNames);
+    }
+
+    PatientRealmProxy() {
+        if (proxyState == null) {
+            injectObjectContext();
+        }
+        proxyState.setConstructionFinished();
+    }
+
+    private void injectObjectContext() {
+        final BaseRealm.RealmObjectContext context = BaseRealm.objectContext.get();
+        this.columnInfo = (PatientColumnInfo) context.getColumnInfo();
+        this.proxyState = new ProxyState(org.sdrc.lrcasemanagement.model.realmmodel.Patient.class, this);
+        proxyState.setRealm$realm(context.getRealm());
+        proxyState.setRow$realm(context.getRow());
+        proxyState.setAcceptDefaultValue$realm(context.getAcceptDefaultValue());
+        proxyState.setExcludeFields$realm(context.getExcludeFields());
+    }
+
+    @SuppressWarnings("cast")
+    public int realmGet$id() {
+        if (proxyState == null) {
+            // Called from model's constructor. Inject context.
+            injectObjectContext();
+        }
+
+        proxyState.getRealm$realm().checkIfValid();
+        return (int) proxyState.getRow$realm().getLong(columnInfo.idIndex);
+    }
+
+    public void realmSet$id(int value) {
+        if (proxyState == null) {
+            // Called from model's constructor. Inject context.
+            injectObjectContext();
+        }
+
+        if (proxyState.isUnderConstruction()) {
+            // default value of the primary key is always ignored.
+            return;
+        }
+
+        proxyState.getRealm$realm().checkIfValid();
+        throw new io.realm.exceptions.RealmException("Primary key field 'id' cannot be changed after object was created.");
+    }
+
+    @SuppressWarnings("cast")
+    public String realmGet$name() {
+        if (proxyState == null) {
+            // Called from model's constructor. Inject context.
+            injectObjectContext();
+        }
+
+        proxyState.getRealm$realm().checkIfValid();
+        return (java.lang.String) proxyState.getRow$realm().getString(columnInfo.nameIndex);
+    }
+
+    public void realmSet$name(String value) {
+        if (proxyState == null) {
+            // Called from model's constructor. Inject context.
+            injectObjectContext();
+        }
+
+        if (proxyState.isUnderConstruction()) {
+            if (!proxyState.getAcceptDefaultValue$realm()) {
+                return;
+            }
+            final Row row = proxyState.getRow$realm();
+            if (value == null) {
+                row.getTable().setNull(columnInfo.nameIndex, row.getIndex(), true);
+                return;
+            }
+            row.getTable().setString(columnInfo.nameIndex, row.getIndex(), value, true);
+            return;
+        }
+
+        proxyState.getRealm$realm().checkIfValid();
+        if (value == null) {
+            proxyState.getRow$realm().setNull(columnInfo.nameIndex);
+            return;
+        }
+        proxyState.getRow$realm().setString(columnInfo.nameIndex, value);
+    }
+
+    @SuppressWarnings("cast")
+    public int realmGet$age() {
+        if (proxyState == null) {
+            // Called from model's constructor. Inject context.
+            injectObjectContext();
+        }
+
+        proxyState.getRealm$realm().checkIfValid();
+        return (int) proxyState.getRow$realm().getLong(columnInfo.ageIndex);
+    }
+
+    public void realmSet$age(int value) {
+        if (proxyState == null) {
+            // Called from model's constructor. Inject context.
+            injectObjectContext();
+        }
+
+        if (proxyState.isUnderConstruction()) {
+            if (!proxyState.getAcceptDefaultValue$realm()) {
+                return;
+            }
+            final Row row = proxyState.getRow$realm();
+            row.getTable().setLong(columnInfo.ageIndex, row.getIndex(), value, true);
+            return;
+        }
+
+        proxyState.getRealm$realm().checkIfValid();
+        proxyState.getRow$realm().setLong(columnInfo.ageIndex, value);
+    }
+
+    @SuppressWarnings("cast")
+    public String realmGet$mctsNo() {
+        if (proxyState == null) {
+            // Called from model's constructor. Inject context.
+            injectObjectContext();
+        }
+
+        proxyState.getRealm$realm().checkIfValid();
+        return (java.lang.String) proxyState.getRow$realm().getString(columnInfo.mctsNoIndex);
+    }
+
+    public void realmSet$mctsNo(String value) {
+        if (proxyState == null) {
+            // Called from model's constructor. Inject context.
+            injectObjectContext();
+        }
+
+        if (proxyState.isUnderConstruction()) {
+            if (!proxyState.getAcceptDefaultValue$realm()) {
+                return;
+            }
+            final Row row = proxyState.getRow$realm();
+            if (value == null) {
+                row.getTable().setNull(columnInfo.mctsNoIndex, row.getIndex(), true);
+                return;
+            }
+            row.getTable().setString(columnInfo.mctsNoIndex, row.getIndex(), value, true);
+            return;
+        }
+
+        proxyState.getRealm$realm().checkIfValid();
+        if (value == null) {
+            proxyState.getRow$realm().setNull(columnInfo.mctsNoIndex);
+            return;
+        }
+        proxyState.getRow$realm().setString(columnInfo.mctsNoIndex, value);
+    }
+
+    @SuppressWarnings("cast")
+    public Date realmGet$dateOfAdmission() {
+        if (proxyState == null) {
+            // Called from model's constructor. Inject context.
+            injectObjectContext();
+        }
+
+        proxyState.getRealm$realm().checkIfValid();
+        if (proxyState.getRow$realm().isNull(columnInfo.dateOfAdmissionIndex)) {
+            return null;
+        }
+        return (java.util.Date) proxyState.getRow$realm().getDate(columnInfo.dateOfAdmissionIndex);
+    }
+
+    public void realmSet$dateOfAdmission(Date value) {
+        if (proxyState == null) {
+            // Called from model's constructor. Inject context.
+            injectObjectContext();
+        }
+
+        if (proxyState.isUnderConstruction()) {
+            if (!proxyState.getAcceptDefaultValue$realm()) {
+                return;
+            }
+            final Row row = proxyState.getRow$realm();
+            if (value == null) {
+                row.getTable().setNull(columnInfo.dateOfAdmissionIndex, row.getIndex(), true);
+                return;
+            }
+            row.getTable().setDate(columnInfo.dateOfAdmissionIndex, row.getIndex(), value, true);
+            return;
+        }
+
+        proxyState.getRealm$realm().checkIfValid();
+        if (value == null) {
+            proxyState.getRow$realm().setNull(columnInfo.dateOfAdmissionIndex);
+            return;
+        }
+        proxyState.getRow$realm().setDate(columnInfo.dateOfAdmissionIndex, value);
+    }
+
+    public static RealmObjectSchema createRealmObjectSchema(RealmSchema realmSchema) {
+        if (!realmSchema.contains("Patient")) {
+            RealmObjectSchema realmObjectSchema = realmSchema.create("Patient");
+            realmObjectSchema.add(new Property("id", RealmFieldType.INTEGER, Property.PRIMARY_KEY, Property.INDEXED, Property.REQUIRED));
+            realmObjectSchema.add(new Property("name", RealmFieldType.STRING, !Property.PRIMARY_KEY, !Property.INDEXED, !Property.REQUIRED));
+            realmObjectSchema.add(new Property("age", RealmFieldType.INTEGER, !Property.PRIMARY_KEY, !Property.INDEXED, Property.REQUIRED));
+            realmObjectSchema.add(new Property("mctsNo", RealmFieldType.STRING, !Property.PRIMARY_KEY, !Property.INDEXED, !Property.REQUIRED));
+            realmObjectSchema.add(new Property("dateOfAdmission", RealmFieldType.DATE, !Property.PRIMARY_KEY, !Property.INDEXED, !Property.REQUIRED));
+            return realmObjectSchema;
+        }
+        return realmSchema.get("Patient");
+    }
+
+    public static Table initTable(SharedRealm sharedRealm) {
+        if (!sharedRealm.hasTable("class_Patient")) {
+            Table table = sharedRealm.getTable("class_Patient");
+            table.addColumn(RealmFieldType.INTEGER, "id", Table.NOT_NULLABLE);
+            table.addColumn(RealmFieldType.STRING, "name", Table.NULLABLE);
+            table.addColumn(RealmFieldType.INTEGER, "age", Table.NOT_NULLABLE);
+            table.addColumn(RealmFieldType.STRING, "mctsNo", Table.NULLABLE);
+            table.addColumn(RealmFieldType.DATE, "dateOfAdmission", Table.NULLABLE);
+            table.addSearchIndex(table.getColumnIndex("id"));
+            table.setPrimaryKey("id");
+            return table;
+        }
+        return sharedRealm.getTable("class_Patient");
+    }
+
+    public static PatientColumnInfo validateTable(SharedRealm sharedRealm, boolean allowExtraColumns) {
+        if (sharedRealm.hasTable("class_Patient")) {
+            Table table = sharedRealm.getTable("class_Patient");
+            final long columnCount = table.getColumnCount();
+            if (columnCount != 5) {
+                if (columnCount < 5) {
+                    throw new RealmMigrationNeededException(sharedRealm.getPath(), "Field count is less than expected - expected 5 but was " + columnCount);
+                }
+                if (allowExtraColumns) {
+                    RealmLog.debug("Field count is more than expected - expected 5 but was %1$d", columnCount);
+                } else {
+                    throw new RealmMigrationNeededException(sharedRealm.getPath(), "Field count is more than expected - expected 5 but was " + columnCount);
+                }
+            }
+            Map<String, RealmFieldType> columnTypes = new HashMap<String, RealmFieldType>();
+            for (long i = 0; i < columnCount; i++) {
+                columnTypes.put(table.getColumnName(i), table.getColumnType(i));
+            }
+
+            final PatientColumnInfo columnInfo = new PatientColumnInfo(sharedRealm.getPath(), table);
+
+            if (!columnTypes.containsKey("id")) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Missing field 'id' in existing Realm file. Either remove field or migrate using io.realm.internal.Table.addColumn().");
+            }
+            if (columnTypes.get("id") != RealmFieldType.INTEGER) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Invalid type 'int' for field 'id' in existing Realm file.");
+            }
+            if (table.isColumnNullable(columnInfo.idIndex) && table.findFirstNull(columnInfo.idIndex) != TableOrView.NO_MATCH) {
+                throw new IllegalStateException("Cannot migrate an object with null value in field 'id'. Either maintain the same type for primary key field 'id', or remove the object with null value before migration.");
+            }
+            if (table.getPrimaryKey() != table.getColumnIndex("id")) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Primary key not defined for field 'id' in existing Realm file. Add @PrimaryKey.");
+            }
+            if (!table.hasSearchIndex(table.getColumnIndex("id"))) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Index not defined for field 'id' in existing Realm file. Either set @Index or migrate using io.realm.internal.Table.removeSearchIndex().");
+            }
+            if (!columnTypes.containsKey("name")) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Missing field 'name' in existing Realm file. Either remove field or migrate using io.realm.internal.Table.addColumn().");
+            }
+            if (columnTypes.get("name") != RealmFieldType.STRING) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Invalid type 'String' for field 'name' in existing Realm file.");
+            }
+            if (!table.isColumnNullable(columnInfo.nameIndex)) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Field 'name' is required. Either set @Required to field 'name' or migrate using RealmObjectSchema.setNullable().");
+            }
+            if (!columnTypes.containsKey("age")) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Missing field 'age' in existing Realm file. Either remove field or migrate using io.realm.internal.Table.addColumn().");
+            }
+            if (columnTypes.get("age") != RealmFieldType.INTEGER) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Invalid type 'int' for field 'age' in existing Realm file.");
+            }
+            if (table.isColumnNullable(columnInfo.ageIndex)) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Field 'age' does support null values in the existing Realm file. Use corresponding boxed type for field 'age' or migrate using RealmObjectSchema.setNullable().");
+            }
+            if (!columnTypes.containsKey("mctsNo")) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Missing field 'mctsNo' in existing Realm file. Either remove field or migrate using io.realm.internal.Table.addColumn().");
+            }
+            if (columnTypes.get("mctsNo") != RealmFieldType.STRING) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Invalid type 'String' for field 'mctsNo' in existing Realm file.");
+            }
+            if (!table.isColumnNullable(columnInfo.mctsNoIndex)) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Field 'mctsNo' is required. Either set @Required to field 'mctsNo' or migrate using RealmObjectSchema.setNullable().");
+            }
+            if (!columnTypes.containsKey("dateOfAdmission")) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Missing field 'dateOfAdmission' in existing Realm file. Either remove field or migrate using io.realm.internal.Table.addColumn().");
+            }
+            if (columnTypes.get("dateOfAdmission") != RealmFieldType.DATE) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Invalid type 'Date' for field 'dateOfAdmission' in existing Realm file.");
+            }
+            if (!table.isColumnNullable(columnInfo.dateOfAdmissionIndex)) {
+                throw new RealmMigrationNeededException(sharedRealm.getPath(), "Field 'dateOfAdmission' is required. Either set @Required to field 'dateOfAdmission' or migrate using RealmObjectSchema.setNullable().");
+            }
+            return columnInfo;
+        } else {
+            throw new RealmMigrationNeededException(sharedRealm.getPath(), "The 'Patient' class is missing from the schema for this Realm.");
+        }
+    }
+
+    public static String getTableName() {
+        return "class_Patient";
+    }
+
+    public static List<String> getFieldNames() {
+        return FIELD_NAMES;
+    }
+
+    @SuppressWarnings("cast")
+    public static org.sdrc.lrcasemanagement.model.realmmodel.Patient createOrUpdateUsingJsonObject(Realm realm, JSONObject json, boolean update)
+        throws JSONException {
+        final List<String> excludeFields = Collections.<String> emptyList();
+        org.sdrc.lrcasemanagement.model.realmmodel.Patient obj = null;
+        if (update) {
+            Table table = realm.getTable(org.sdrc.lrcasemanagement.model.realmmodel.Patient.class);
+            long pkColumnIndex = table.getPrimaryKey();
+            long rowIndex = TableOrView.NO_MATCH;
+            if (!json.isNull("id")) {
+                rowIndex = table.findFirstLong(pkColumnIndex, json.getLong("id"));
+            }
+            if (rowIndex != TableOrView.NO_MATCH) {
+                final BaseRealm.RealmObjectContext objectContext = BaseRealm.objectContext.get();
+                try {
+                    objectContext.set(realm, table.getUncheckedRow(rowIndex), realm.schema.getColumnInfo(org.sdrc.lrcasemanagement.model.realmmodel.Patient.class), false, Collections.<String> emptyList());
+                    obj = new io.realm.PatientRealmProxy();
+                } finally {
+                    objectContext.clear();
+                }
+            }
+        }
+        if (obj == null) {
+            if (json.has("id")) {
+                if (json.isNull("id")) {
+                    obj = (io.realm.PatientRealmProxy) realm.createObjectInternal(org.sdrc.lrcasemanagement.model.realmmodel.Patient.class, null, true, excludeFields);
+                } else {
+                    obj = (io.realm.PatientRealmProxy) realm.createObjectInternal(org.sdrc.lrcasemanagement.model.realmmodel.Patient.class, json.getInt("id"), true, excludeFields);
+                }
+            } else {
+                throw new IllegalArgumentException("JSON object doesn't have the primary key field 'id'.");
+            }
+        }
+        if (json.has("name")) {
+            if (json.isNull("name")) {
+                ((PatientRealmProxyInterface) obj).realmSet$name(null);
+            } else {
+                ((PatientRealmProxyInterface) obj).realmSet$name((String) json.getString("name"));
+            }
+        }
+        if (json.has("age")) {
+            if (json.isNull("age")) {
+                throw new IllegalArgumentException("Trying to set non-nullable field 'age' to null.");
+            } else {
+                ((PatientRealmProxyInterface) obj).realmSet$age((int) json.getInt("age"));
+            }
+        }
+        if (json.has("mctsNo")) {
+            if (json.isNull("mctsNo")) {
+                ((PatientRealmProxyInterface) obj).realmSet$mctsNo(null);
+            } else {
+                ((PatientRealmProxyInterface) obj).realmSet$mctsNo((String) json.getString("mctsNo"));
+            }
+        }
+        if (json.has("dateOfAdmission")) {
+            if (json.isNull("dateOfAdmission")) {
+                ((PatientRealmProxyInterface) obj).realmSet$dateOfAdmission(null);
+            } else {
+                Object timestamp = json.get("dateOfAdmission");
+                if (timestamp instanceof String) {
+                    ((PatientRealmProxyInterface) obj).realmSet$dateOfAdmission(JsonUtils.stringToDate((String) timestamp));
+                } else {
+                    ((PatientRealmProxyInterface) obj).realmSet$dateOfAdmission(new Date(json.getLong("dateOfAdmission")));
+                }
+            }
+        }
+        return obj;
+    }
+
+    @SuppressWarnings("cast")
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static org.sdrc.lrcasemanagement.model.realmmodel.Patient createUsingJsonStream(Realm realm, JsonReader reader)
+        throws IOException {
+        boolean jsonHasPrimaryKey = false;
+        org.sdrc.lrcasemanagement.model.realmmodel.Patient obj = new org.sdrc.lrcasemanagement.model.realmmodel.Patient();
+        reader.beginObject();
+        while (reader.hasNext()) {
+            String name = reader.nextName();
+            if (name.equals("id")) {
+                if (reader.peek() == JsonToken.NULL) {
+                    reader.skipValue();
+                    throw new IllegalArgumentException("Trying to set non-nullable field 'id' to null.");
+                } else {
+                    ((PatientRealmProxyInterface) obj).realmSet$id((int) reader.nextInt());
+                }
+                jsonHasPrimaryKey = true;
+            } else if (name.equals("name")) {
+                if (reader.peek() == JsonToken.NULL) {
+                    reader.skipValue();
+                    ((PatientRealmProxyInterface) obj).realmSet$name(null);
+                } else {
+                    ((PatientRealmProxyInterface) obj).realmSet$name((String) reader.nextString());
+                }
+            } else if (name.equals("age")) {
+                if (reader.peek() == JsonToken.NULL) {
+                    reader.skipValue();
+                    throw new IllegalArgumentException("Trying to set non-nullable field 'age' to null.");
+                } else {
+                    ((PatientRealmProxyInterface) obj).realmSet$age((int) reader.nextInt());
+                }
+            } else if (name.equals("mctsNo")) {
+                if (reader.peek() == JsonToken.NULL) {
+                    reader.skipValue();
+                    ((PatientRealmProxyInterface) obj).realmSet$mctsNo(null);
+                } else {
+                    ((PatientRealmProxyInterface) obj).realmSet$mctsNo((String) reader.nextString());
+                }
+            } else if (name.equals("dateOfAdmission")) {
+                if (reader.peek() == JsonToken.NULL) {
+                    reader.skipValue();
+                    ((PatientRealmProxyInterface) obj).realmSet$dateOfAdmission(null);
+                } else if (reader.peek() == JsonToken.NUMBER) {
+                    long timestamp = reader.nextLong();
+                    if (timestamp > -1) {
+                        ((PatientRealmProxyInterface) obj).realmSet$dateOfAdmission(new Date(timestamp));
+                    }
+                } else {
+                    ((PatientRealmProxyInterface) obj).realmSet$dateOfAdmission(JsonUtils.stringToDate(reader.nextString()));
+                }
+            } else {
+                reader.skipValue();
+            }
+        }
+        reader.endObject();
+        if (!jsonHasPrimaryKey) {
+            throw new IllegalArgumentException("JSON object doesn't have the primary key field 'id'.");
+        }
+        obj = realm.copyToRealm(obj);
+        return obj;
+    }
+
+    public static org.sdrc.lrcasemanagement.model.realmmodel.Patient copyOrUpdate(Realm realm, org.sdrc.lrcasemanagement.model.realmmodel.Patient object, boolean update, Map<RealmModel,RealmObjectProxy> cache) {
+        if (object instanceof RealmObjectProxy && ((RealmObjectProxy) object).realmGet$proxyState().getRealm$realm() != null && ((RealmObjectProxy) object).realmGet$proxyState().getRealm$realm().threadId != realm.threadId) {
+            throw new IllegalArgumentException("Objects which belong to Realm instances in other threads cannot be copied into this Realm instance.");
+        }
+        if (object instanceof RealmObjectProxy && ((RealmObjectProxy)object).realmGet$proxyState().getRealm$realm() != null && ((RealmObjectProxy)object).realmGet$proxyState().getRealm$realm().getPath().equals(realm.getPath())) {
+            return object;
+        }
+        final BaseRealm.RealmObjectContext objectContext = BaseRealm.objectContext.get();
+        RealmObjectProxy cachedRealmObject = cache.get(object);
+        if (cachedRealmObject != null) {
+            return (org.sdrc.lrcasemanagement.model.realmmodel.Patient) cachedRealmObject;
+        } else {
+            org.sdrc.lrcasemanagement.model.realmmodel.Patient realmObject = null;
+            boolean canUpdate = update;
+            if (canUpdate) {
+                Table table = realm.getTable(org.sdrc.lrcasemanagement.model.realmmodel.Patient.class);
+                long pkColumnIndex = table.getPrimaryKey();
+                long rowIndex = table.findFirstLong(pkColumnIndex, ((PatientRealmProxyInterface) object).realmGet$id());
+                if (rowIndex != TableOrView.NO_MATCH) {
+                    try {
+                        objectContext.set(realm, table.getUncheckedRow(rowIndex), realm.schema.getColumnInfo(org.sdrc.lrcasemanagement.model.realmmodel.Patient.class), false, Collections.<String> emptyList());
+                        realmObject = new io.realm.PatientRealmProxy();
+                        cache.put(object, (RealmObjectProxy) realmObject);
+                    } finally {
+                        objectContext.clear();
+                    }
+                } else {
+                    canUpdate = false;
+                }
+            }
+
+            if (canUpdate) {
+                return update(realm, realmObject, object, cache);
+            } else {
+                return copy(realm, object, update, cache);
+            }
+        }
+    }
+
+    public static org.sdrc.lrcasemanagement.model.realmmodel.Patient copy(Realm realm, org.sdrc.lrcasemanagement.model.realmmodel.Patient newObject, boolean update, Map<RealmModel,RealmObjectProxy> cache) {
+        RealmObjectProxy cachedRealmObject = cache.get(newObject);
+        if (cachedRealmObject != null) {
+            return (org.sdrc.lrcasemanagement.model.realmmodel.Patient) cachedRealmObject;
+        } else {
+            // rejecting default values to avoid creating unexpected objects from RealmModel/RealmList fields.
+            org.sdrc.lrcasemanagement.model.realmmodel.Patient realmObject = realm.createObjectInternal(org.sdrc.lrcasemanagement.model.realmmodel.Patient.class, ((PatientRealmProxyInterface) newObject).realmGet$id(), false, Collections.<String>emptyList());
+            cache.put(newObject, (RealmObjectProxy) realmObject);
+            ((PatientRealmProxyInterface) realmObject).realmSet$name(((PatientRealmProxyInterface) newObject).realmGet$name());
+            ((PatientRealmProxyInterface) realmObject).realmSet$age(((PatientRealmProxyInterface) newObject).realmGet$age());
+            ((PatientRealmProxyInterface) realmObject).realmSet$mctsNo(((PatientRealmProxyInterface) newObject).realmGet$mctsNo());
+            ((PatientRealmProxyInterface) realmObject).realmSet$dateOfAdmission(((PatientRealmProxyInterface) newObject).realmGet$dateOfAdmission());
+            return realmObject;
+        }
+    }
+
+    public static long insert(Realm realm, org.sdrc.lrcasemanagement.model.realmmodel.Patient object, Map<RealmModel,Long> cache) {
+        if (object instanceof RealmObjectProxy && ((RealmObjectProxy)object).realmGet$proxyState().getRealm$realm() != null && ((RealmObjectProxy)object).realmGet$proxyState().getRealm$realm().getPath().equals(realm.getPath())) {
+            return ((RealmObjectProxy)object).realmGet$proxyState().getRow$realm().getIndex();
+        }
+        Table table = realm.getTable(org.sdrc.lrcasemanagement.model.realmmodel.Patient.class);
+        long tableNativePtr = table.getNativeTablePointer();
+        PatientColumnInfo columnInfo = (PatientColumnInfo) realm.schema.getColumnInfo(org.sdrc.lrcasemanagement.model.realmmodel.Patient.class);
+        long pkColumnIndex = table.getPrimaryKey();
+        long rowIndex = TableOrView.NO_MATCH;
+        Object primaryKeyValue = ((PatientRealmProxyInterface) object).realmGet$id();
+        if (primaryKeyValue != null) {
+            rowIndex = Table.nativeFindFirstInt(tableNativePtr, pkColumnIndex, ((PatientRealmProxyInterface) object).realmGet$id());
+        }
+        if (rowIndex == TableOrView.NO_MATCH) {
+            rowIndex = table.addEmptyRowWithPrimaryKey(((PatientRealmProxyInterface) object).realmGet$id(), false);
+        } else {
+            Table.throwDuplicatePrimaryKeyException(primaryKeyValue);
+        }
+        cache.put(object, rowIndex);
+        String realmGet$name = ((PatientRealmProxyInterface)object).realmGet$name();
+        if (realmGet$name != null) {
+            Table.nativeSetString(tableNativePtr, columnInfo.nameIndex, rowIndex, realmGet$name, false);
+        }
+        Table.nativeSetLong(tableNativePtr, columnInfo.ageIndex, rowIndex, ((PatientRealmProxyInterface)object).realmGet$age(), false);
+        String realmGet$mctsNo = ((PatientRealmProxyInterface)object).realmGet$mctsNo();
+        if (realmGet$mctsNo != null) {
+            Table.nativeSetString(tableNativePtr, columnInfo.mctsNoIndex, rowIndex, realmGet$mctsNo, false);
+        }
+        java.util.Date realmGet$dateOfAdmission = ((PatientRealmProxyInterface)object).realmGet$dateOfAdmission();
+        if (realmGet$dateOfAdmission != null) {
+            Table.nativeSetTimestamp(tableNativePtr, columnInfo.dateOfAdmissionIndex, rowIndex, realmGet$dateOfAdmission.getTime(), false);
+        }
+        return rowIndex;
+    }
+
+    public static void insert(Realm realm, Iterator<? extends RealmModel> objects, Map<RealmModel,Long> cache) {
+        Table table = realm.getTable(org.sdrc.lrcasemanagement.model.realmmodel.Patient.class);
+        long tableNativePtr = table.getNativeTablePointer();
+        PatientColumnInfo columnInfo = (PatientColumnInfo) realm.schema.getColumnInfo(org.sdrc.lrcasemanagement.model.realmmodel.Patient.class);
+        long pkColumnIndex = table.getPrimaryKey();
+        org.sdrc.lrcasemanagement.model.realmmodel.Patient object = null;
+        while (objects.hasNext()) {
+            object = (org.sdrc.lrcasemanagement.model.realmmodel.Patient) objects.next();
+            if(!cache.containsKey(object)) {
+                if (object instanceof RealmObjectProxy && ((RealmObjectProxy)object).realmGet$proxyState().getRealm$realm() != null && ((RealmObjectProxy)object).realmGet$proxyState().getRealm$realm().getPath().equals(realm.getPath())) {
+                    cache.put(object, ((RealmObjectProxy)object).realmGet$proxyState().getRow$realm().getIndex());
+                    continue;
+                }
+                long rowIndex = TableOrView.NO_MATCH;
+                Object primaryKeyValue = ((PatientRealmProxyInterface) object).realmGet$id();
+                if (primaryKeyValue != null) {
+                    rowIndex = Table.nativeFindFirstInt(tableNativePtr, pkColumnIndex, ((PatientRealmProxyInterface) object).realmGet$id());
+                }
+                if (rowIndex == TableOrView.NO_MATCH) {
+                    rowIndex = table.addEmptyRowWithPrimaryKey(((PatientRealmProxyInterface) object).realmGet$id(), false);
+                } else {
+                    Table.throwDuplicatePrimaryKeyException(primaryKeyValue);
+                }
+                cache.put(object, rowIndex);
+                String realmGet$name = ((PatientRealmProxyInterface)object).realmGet$name();
+                if (realmGet$name != null) {
+                    Table.nativeSetString(tableNativePtr, columnInfo.nameIndex, rowIndex, realmGet$name, false);
+                }
+                Table.nativeSetLong(tableNativePtr, columnInfo.ageIndex, rowIndex, ((PatientRealmProxyInterface)object).realmGet$age(), false);
+                String realmGet$mctsNo = ((PatientRealmProxyInterface)object).realmGet$mctsNo();
+                if (realmGet$mctsNo != null) {
+                    Table.nativeSetString(tableNativePtr, columnInfo.mctsNoIndex, rowIndex, realmGet$mctsNo, false);
+                }
+                java.util.Date realmGet$dateOfAdmission = ((PatientRealmProxyInterface)object).realmGet$dateOfAdmission();
+                if (realmGet$dateOfAdmission != null) {
+                    Table.nativeSetTimestamp(tableNativePtr, columnInfo.dateOfAdmissionIndex, rowIndex, realmGet$dateOfAdmission.getTime(), false);
+                }
+            }
+        }
+    }
+
+    public static long insertOrUpdate(Realm realm, org.sdrc.lrcasemanagement.model.realmmodel.Patient object, Map<RealmModel,Long> cache) {
+        if (object instanceof RealmObjectProxy && ((RealmObjectProxy)object).realmGet$proxyState().getRealm$realm() != null && ((RealmObjectProxy)object).realmGet$proxyState().getRealm$realm().getPath().equals(realm.getPath())) {
+            return ((RealmObjectProxy)object).realmGet$proxyState().getRow$realm().getIndex();
+        }
+        Table table = realm.getTable(org.sdrc.lrcasemanagement.model.realmmodel.Patient.class);
+        long tableNativePtr = table.getNativeTablePointer();
+        PatientColumnInfo columnInfo = (PatientColumnInfo) realm.schema.getColumnInfo(org.sdrc.lrcasemanagement.model.realmmodel.Patient.class);
+        long pkColumnIndex = table.getPrimaryKey();
+        long rowIndex = TableOrView.NO_MATCH;
+        Object primaryKeyValue = ((PatientRealmProxyInterface) object).realmGet$id();
+        if (primaryKeyValue != null) {
+            rowIndex = Table.nativeFindFirstInt(tableNativePtr, pkColumnIndex, ((PatientRealmProxyInterface) object).realmGet$id());
+        }
+        if (rowIndex == TableOrView.NO_MATCH) {
+            rowIndex = table.addEmptyRowWithPrimaryKey(((PatientRealmProxyInterface) object).realmGet$id(), false);
+        }
+        cache.put(object, rowIndex);
+        String realmGet$name = ((PatientRealmProxyInterface)object).realmGet$name();
+        if (realmGet$name != null) {
+            Table.nativeSetString(tableNativePtr, columnInfo.nameIndex, rowIndex, realmGet$name, false);
+        } else {
+            Table.nativeSetNull(tableNativePtr, columnInfo.nameIndex, rowIndex, false);
+        }
+        Table.nativeSetLong(tableNativePtr, columnInfo.ageIndex, rowIndex, ((PatientRealmProxyInterface)object).realmGet$age(), false);
+        String realmGet$mctsNo = ((PatientRealmProxyInterface)object).realmGet$mctsNo();
+        if (realmGet$mctsNo != null) {
+            Table.nativeSetString(tableNativePtr, columnInfo.mctsNoIndex, rowIndex, realmGet$mctsNo, false);
+        } else {
+            Table.nativeSetNull(tableNativePtr, columnInfo.mctsNoIndex, rowIndex, false);
+        }
+        java.util.Date realmGet$dateOfAdmission = ((PatientRealmProxyInterface)object).realmGet$dateOfAdmission();
+        if (realmGet$dateOfAdmission != null) {
+            Table.nativeSetTimestamp(tableNativePtr, columnInfo.dateOfAdmissionIndex, rowIndex, realmGet$dateOfAdmission.getTime(), false);
+        } else {
+            Table.nativeSetNull(tableNativePtr, columnInfo.dateOfAdmissionIndex, rowIndex, false);
+        }
+        return rowIndex;
+    }
+
+    public static void insertOrUpdate(Realm realm, Iterator<? extends RealmModel> objects, Map<RealmModel,Long> cache) {
+        Table table = realm.getTable(org.sdrc.lrcasemanagement.model.realmmodel.Patient.class);
+        long tableNativePtr = table.getNativeTablePointer();
+        PatientColumnInfo columnInfo = (PatientColumnInfo) realm.schema.getColumnInfo(org.sdrc.lrcasemanagement.model.realmmodel.Patient.class);
+        long pkColumnIndex = table.getPrimaryKey();
+        org.sdrc.lrcasemanagement.model.realmmodel.Patient object = null;
+        while (objects.hasNext()) {
+            object = (org.sdrc.lrcasemanagement.model.realmmodel.Patient) objects.next();
+            if(!cache.containsKey(object)) {
+                if (object instanceof RealmObjectProxy && ((RealmObjectProxy)object).realmGet$proxyState().getRealm$realm() != null && ((RealmObjectProxy)object).realmGet$proxyState().getRealm$realm().getPath().equals(realm.getPath())) {
+                    cache.put(object, ((RealmObjectProxy)object).realmGet$proxyState().getRow$realm().getIndex());
+                    continue;
+                }
+                long rowIndex = TableOrView.NO_MATCH;
+                Object primaryKeyValue = ((PatientRealmProxyInterface) object).realmGet$id();
+                if (primaryKeyValue != null) {
+                    rowIndex = Table.nativeFindFirstInt(tableNativePtr, pkColumnIndex, ((PatientRealmProxyInterface) object).realmGet$id());
+                }
+                if (rowIndex == TableOrView.NO_MATCH) {
+                    rowIndex = table.addEmptyRowWithPrimaryKey(((PatientRealmProxyInterface) object).realmGet$id(), false);
+                }
+                cache.put(object, rowIndex);
+                String realmGet$name = ((PatientRealmProxyInterface)object).realmGet$name();
+                if (realmGet$name != null) {
+                    Table.nativeSetString(tableNativePtr, columnInfo.nameIndex, rowIndex, realmGet$name, false);
+                } else {
+                    Table.nativeSetNull(tableNativePtr, columnInfo.nameIndex, rowIndex, false);
+                }
+                Table.nativeSetLong(tableNativePtr, columnInfo.ageIndex, rowIndex, ((PatientRealmProxyInterface)object).realmGet$age(), false);
+                String realmGet$mctsNo = ((PatientRealmProxyInterface)object).realmGet$mctsNo();
+                if (realmGet$mctsNo != null) {
+                    Table.nativeSetString(tableNativePtr, columnInfo.mctsNoIndex, rowIndex, realmGet$mctsNo, false);
+                } else {
+                    Table.nativeSetNull(tableNativePtr, columnInfo.mctsNoIndex, rowIndex, false);
+                }
+                java.util.Date realmGet$dateOfAdmission = ((PatientRealmProxyInterface)object).realmGet$dateOfAdmission();
+                if (realmGet$dateOfAdmission != null) {
+                    Table.nativeSetTimestamp(tableNativePtr, columnInfo.dateOfAdmissionIndex, rowIndex, realmGet$dateOfAdmission.getTime(), false);
+                } else {
+                    Table.nativeSetNull(tableNativePtr, columnInfo.dateOfAdmissionIndex, rowIndex, false);
+                }
+            }
+        }
+    }
+
+    public static org.sdrc.lrcasemanagement.model.realmmodel.Patient createDetachedCopy(org.sdrc.lrcasemanagement.model.realmmodel.Patient realmObject, int currentDepth, int maxDepth, Map<RealmModel, CacheData<RealmModel>> cache) {
+        if (currentDepth > maxDepth || realmObject == null) {
+            return null;
+        }
+        CacheData<RealmModel> cachedObject = cache.get(realmObject);
+        org.sdrc.lrcasemanagement.model.realmmodel.Patient unmanagedObject;
+        if (cachedObject != null) {
+            // Reuse cached object or recreate it because it was encountered at a lower depth.
+            if (currentDepth >= cachedObject.minDepth) {
+                return (org.sdrc.lrcasemanagement.model.realmmodel.Patient)cachedObject.object;
+            } else {
+                unmanagedObject = (org.sdrc.lrcasemanagement.model.realmmodel.Patient)cachedObject.object;
+                cachedObject.minDepth = currentDepth;
+            }
+        } else {
+            unmanagedObject = new org.sdrc.lrcasemanagement.model.realmmodel.Patient();
+            cache.put(realmObject, new RealmObjectProxy.CacheData(currentDepth, unmanagedObject));
+        }
+        ((PatientRealmProxyInterface) unmanagedObject).realmSet$id(((PatientRealmProxyInterface) realmObject).realmGet$id());
+        ((PatientRealmProxyInterface) unmanagedObject).realmSet$name(((PatientRealmProxyInterface) realmObject).realmGet$name());
+        ((PatientRealmProxyInterface) unmanagedObject).realmSet$age(((PatientRealmProxyInterface) realmObject).realmGet$age());
+        ((PatientRealmProxyInterface) unmanagedObject).realmSet$mctsNo(((PatientRealmProxyInterface) realmObject).realmGet$mctsNo());
+        ((PatientRealmProxyInterface) unmanagedObject).realmSet$dateOfAdmission(((PatientRealmProxyInterface) realmObject).realmGet$dateOfAdmission());
+        return unmanagedObject;
+    }
+
+    static org.sdrc.lrcasemanagement.model.realmmodel.Patient update(Realm realm, org.sdrc.lrcasemanagement.model.realmmodel.Patient realmObject, org.sdrc.lrcasemanagement.model.realmmodel.Patient newObject, Map<RealmModel, RealmObjectProxy> cache) {
+        ((PatientRealmProxyInterface) realmObject).realmSet$name(((PatientRealmProxyInterface) newObject).realmGet$name());
+        ((PatientRealmProxyInterface) realmObject).realmSet$age(((PatientRealmProxyInterface) newObject).realmGet$age());
+        ((PatientRealmProxyInterface) realmObject).realmSet$mctsNo(((PatientRealmProxyInterface) newObject).realmGet$mctsNo());
+        ((PatientRealmProxyInterface) realmObject).realmSet$dateOfAdmission(((PatientRealmProxyInterface) newObject).realmGet$dateOfAdmission());
+        return realmObject;
+    }
+
+    @Override
+    public String toString() {
+        if (!RealmObject.isValid(this)) {
+            return "Invalid object";
+        }
+        StringBuilder stringBuilder = new StringBuilder("Patient = [");
+        stringBuilder.append("{id:");
+        stringBuilder.append(realmGet$id());
+        stringBuilder.append("}");
+        stringBuilder.append(",");
+        stringBuilder.append("{name:");
+        stringBuilder.append(realmGet$name() != null ? realmGet$name() : "null");
+        stringBuilder.append("}");
+        stringBuilder.append(",");
+        stringBuilder.append("{age:");
+        stringBuilder.append(realmGet$age());
+        stringBuilder.append("}");
+        stringBuilder.append(",");
+        stringBuilder.append("{mctsNo:");
+        stringBuilder.append(realmGet$mctsNo() != null ? realmGet$mctsNo() : "null");
+        stringBuilder.append("}");
+        stringBuilder.append(",");
+        stringBuilder.append("{dateOfAdmission:");
+        stringBuilder.append(realmGet$dateOfAdmission() != null ? realmGet$dateOfAdmission() : "null");
+        stringBuilder.append("}");
+        stringBuilder.append("]");
+        return stringBuilder.toString();
+    }
+
+    @Override
+    public ProxyState realmGet$proxyState() {
+        return proxyState;
+    }
+
+    @Override
+    public int hashCode() {
+        String realmName = proxyState.getRealm$realm().getPath();
+        String tableName = proxyState.getRow$realm().getTable().getName();
+        long rowIndex = proxyState.getRow$realm().getIndex();
+
+        int result = 17;
+        result = 31 * result + ((realmName != null) ? realmName.hashCode() : 0);
+        result = 31 * result + ((tableName != null) ? tableName.hashCode() : 0);
+        result = 31 * result + (int) (rowIndex ^ (rowIndex >>> 32));
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PatientRealmProxy aPatient = (PatientRealmProxy)o;
+
+        String path = proxyState.getRealm$realm().getPath();
+        String otherPath = aPatient.proxyState.getRealm$realm().getPath();
+        if (path != null ? !path.equals(otherPath) : otherPath != null) return false;
+
+        String tableName = proxyState.getRow$realm().getTable().getName();
+        String otherTableName = aPatient.proxyState.getRow$realm().getTable().getName();
+        if (tableName != null ? !tableName.equals(otherTableName) : otherTableName != null) return false;
+
+        if (proxyState.getRow$realm().getIndex() != aPatient.proxyState.getRow$realm().getIndex()) return false;
+
+        return true;
+    }
+
+}

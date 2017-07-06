@@ -1,0 +1,789 @@
+package org.sdrc.lrcasemanagement.activity;
+
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
+import android.view.Gravity;
+import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
+
+import org.sdrc.lrcasemanagement.R;
+import org.sdrc.lrcasemanagement.adapter.PatientListAdapter;
+import org.sdrc.lrcasemanagement.asynctask.SyncAsyncTask;
+import org.sdrc.lrcasemanagement.listener.SyncListener;
+import org.sdrc.lrcasemanagement.model.AsyncTaskResultModel;
+import org.sdrc.lrcasemanagement.model.PatientModel;
+import org.sdrc.lrcasemanagement.model.UserModel;
+import org.sdrc.lrcasemanagement.model.realmmodel.Area;
+import org.sdrc.lrcasemanagement.model.realmmodel.Child;
+import org.sdrc.lrcasemanagement.model.realmmodel.ChildStatus;
+import org.sdrc.lrcasemanagement.model.realmmodel.Data;
+import org.sdrc.lrcasemanagement.model.realmmodel.LatestSerialNoOfMonths;
+import org.sdrc.lrcasemanagement.model.realmmodel.Patient;
+import org.sdrc.lrcasemanagement.model.realmmodel.SysConfig;
+import org.sdrc.lrcasemanagement.model.realmmodel.Type;
+import org.sdrc.lrcasemanagement.model.realmmodel.TypeDetails;
+import org.sdrc.lrcasemanagement.model.realmmodel.User;
+import org.sdrc.lrcasemanagement.service.HomeService;
+import org.sdrc.lrcasemanagement.service.HomeServiceImpl;
+import org.sdrc.lrcasemanagement.service.LRCMServcie;
+import org.sdrc.lrcasemanagement.service.LRCMServiceImpl;
+import org.sdrc.lrcasemanagement.service.SyncServiceImpl;
+import org.sdrc.lrcasemanagement.util.Constant;
+import org.sdrc.lrcasemanagement.util.LRCM;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
+
+public class PatientListActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, SyncListener, View.OnClickListener {
+
+    private HomeService homeService;
+    private NavigationView mNavigationView;
+
+    private TextView usernameTextView;
+
+    private ProgressDialog progressDialog;
+    private AlertDialog alertDialog;
+
+    private RecyclerView recyclerView;
+    private PatientListAdapter dataListAdapter;
+    List<PatientModel> patientModels;
+
+    // Variable for storing current date
+    private EditText startDateText, endDateText, password;
+    private Date startDate, endDate;
+    private Dialog dialog;
+    private Dialog passwordDialog;
+    //private int mYear, mMonth, mDay;
+    Boolean searchByDateFlag = false;
+
+    private MaterialSearchView searchView;
+
+    //variables for search by date
+    Realm realm;
+
+    Calendar c;
+
+    private int mYear, mMonth, mDay, closedCaseCount, openedCaseCount, totalCaseCount, selectedStartDay, selectedStartMonth, selectedStartYear, selectedEndDay, selectedEndMonth, selectedEndYear;
+    private Date minDate, selectedStartDate, currentDate, selectedEndDate, firstDateOfMonth;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_lrcm);
+        setTitle(getString(R.string.activity_title_patient_list));
+        LRCM.getInstance().setApplicationContext(PatientListActivity.this);
+        homeService = new HomeServiceImpl();
+        UserModel userModel = homeService.getUserModel();
+
+        //initNavigationDrawer();
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
+
+        View header = mNavigationView.getHeaderView(0);
+
+        usernameTextView = (TextView) header.findViewById(R.id.area_name);
+        if (userModel != null) {
+            usernameTextView.setText(userModel.getAreaName() != null ? userModel.getAreaName() : "");
+        }
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        progressDialog = new ProgressDialog(PatientListActivity.this);
+        progressDialog.setTitle(getString(R.string.syncing));
+        progressDialog.setMessage(getString(R.string.please_wait));
+        progressDialog.setCancelable(false);
+
+        //alert dialog code
+        alertDialog = new AlertDialog.Builder(PatientListActivity.this).create();
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ok), new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                alertDialog.dismiss();
+            }
+        });
+
+        setList();
+    }
+
+    public void setList() {
+        recyclerView = (RecyclerView) findViewById(R.id.dataList);
+
+        LRCMServcie servcie = new LRCMServiceImpl();
+        if (searchByDateFlag) {
+            patientModels = servcie.getPatientModelByDate(startDate, endDate);
+        } else {
+            patientModels = servcie.getPatientModel();
+        }
+
+        patientModels = patientModels != null ? patientModels : new ArrayList<PatientModel>();
+        if (patientModels.size() > 0) {
+            ((TextView) findViewById(R.id.noDataAvailableTextView)).setVisibility(View.GONE);
+        } else {
+            ((TextView) findViewById(R.id.noDataAvailableTextView)).setVisibility(View.VISIBLE);
+        }
+
+        dataListAdapter = new PatientListAdapter(PatientListActivity.this, patientModels);
+        recyclerView.setAdapter(dataListAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(PatientListActivity.this));
+        recyclerView.setVerticalScrollBarEnabled(true);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_fab);
+        fab.bringToFront();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Click action
+                Intent intent = new Intent(PatientListActivity.this, PatientActivity.class);
+                intent.putExtra("patientModel", new PatientModel());
+                intent.putExtra("fab_status", "save");
+                startActivity(intent);
+            }
+        });
+
+        searchView = (MaterialSearchView) findViewById(R.id.search_view);
+        searchView.setVoiceSearch(false);
+        searchView.setCursorDrawable(R.drawable.custom_cursor);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchByDateFlag = false;
+                final List<PatientModel> patientModel = filter(patientModels, newText);
+                ((PatientListAdapter) recyclerView.getAdapter()).setFilter(patientModel);
+                return false;
+            }
+        });
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+                //Do some magic
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                //Do some magic
+            }
+        });
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+
+        getMenuInflater().inflate(R.menu.menu_patient_list, menu);
+
+        MenuItem item = menu.findItem(R.id.search);
+        searchView.setMenuItem(item);
+
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.privacy_policy:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.server_url) + getString(R.string.privacy_policy_url)));
+                startActivity(browserIntent);
+                return true;
+            case R.id.search_by_date:
+                //showDateTime();
+                showDateTimeDialog();
+                return true;
+            case R.id.refresh_search_by_date:
+                searchByDateFlag = false;
+                startDate = null;
+                endDate = null;
+                setList();
+                Toast.makeText(this, getString(R.string.refreshed), Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    public void showDateTimeDialog() {
+        ImageView startDatePicker, endDatePicker;
+
+        Button searchCancle, search;
+
+        DateFormat outputFormatter = new SimpleDateFormat("MM/dd/yyyy");
+
+        dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.search_by_date_dialog);
+        dialog.setCanceledOnTouchOutside(false);
+
+        searchCancle = (Button) dialog.findViewById(R.id.search_cancel);
+        search = (Button) dialog.findViewById(R.id.search_date);
+
+        startDatePicker = (ImageView) dialog.findViewById(R.id.show_search_start_date);
+        endDatePicker = (ImageView) dialog.findViewById(R.id.search_show_end_date);
+
+        startDateText = (EditText) dialog.findViewById(R.id.search_start_date);
+        endDateText = (EditText) dialog.findViewById(R.id.search_end_date);
+
+        realm = LRCM.getInstance().getRealm();
+
+        //Get CurrentDate and save the instance
+        c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+        currentDate = c.getTime();
+
+        try {
+            currentDate = outputFormatter.parse(outputFormatter.format(c.getTime()));
+        } catch (ParseException pe) {
+            currentDate = c.getTime();
+        }
+
+
+        minDate = realm.where(Patient.class).minimumDate("admissionDateAndTime");
+
+        if (minDate == null) {
+            minDate = currentDate;
+        } else {
+            try {
+                minDate = outputFormatter.parse(outputFormatter.format(minDate));
+            } catch (ParseException pe) {
+                minDate = null;
+            }
+        }
+
+        startDate = minDate;
+        endDate = currentDate;
+
+        String selectedStartDateText = getDateString(minDate);
+        startDateText.setText(selectedStartDateText);
+
+        String selectedEndDateText = getDateString(currentDate);
+        endDateText.setText(selectedEndDateText);
+
+        startDatePicker.setOnClickListener(this);
+        endDatePicker.setOnClickListener(this);
+
+        searchCancle.setOnClickListener(this);
+        search.setOnClickListener(this);
+        dialog.show();
+    }
+
+    public String getDateString(Date date) {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        String formattedDay = (String.valueOf(day));
+        String formattedMonth = (String.valueOf(month));
+
+        if (day < 10) {
+            formattedDay = "0" + day;
+        }
+
+        if (month < 10) {
+            formattedMonth = "0" + month;
+        }
+        return (formattedDay + "-" + formattedMonth + "-" + year);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.show_search_start_date:
+                //methode to show start date alert dialog
+                showStartDatePicker();
+                break;
+            case R.id.search_show_end_date:
+                //methode to show start date alert dialog
+                showEndDatePicker();
+                break;
+            case R.id.search_cancel:
+                dialog.dismiss();
+                break;
+            case R.id.search_date:
+                searchByDateFlag = true;
+                setList();
+                dialog.dismiss();
+                break;
+
+            //password dialog cancel button
+            case R.id.cancel_button:
+                passwordDialog.dismiss();
+                break;
+
+            case R.id.ok_button:
+                String password = this.password.getText().toString();
+
+                //Checking whether user has given the password or not
+                if (password != null && !password.equals("")) {
+                    //Checking whether user has given correct password or not
+                    Realm realm = LRCM.getInstance().getRealm();
+                    User user = realm.where(User.class).findFirst();
+                    if (user != null) {
+                        if (user.getPassword().equals(password)) {
+
+                            realm.beginTransaction();
+                            realm.delete(Area.class);
+                            realm.delete(Child.class);
+                            realm.delete(ChildStatus.class);
+                            realm.delete(Patient.class);
+                            realm.delete(SysConfig.class);
+                            realm.delete(Type.class);
+                            realm.delete(TypeDetails.class);
+                            realm.delete(Data.class);
+                            realm.delete(LatestSerialNoOfMonths.class);
+                            realm.delete(User.class);
+                            realm.commitTransaction();
+
+                            Constant.CLEAR_DATA_TAPPED = true;
+                            LRCM.getInstance().closeRealm();
+
+                            Toast.makeText(this, getString(R.string.data_cleared), Toast.LENGTH_SHORT).show();
+
+                            Intent intent = new Intent(PatientListActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+
+                        } else {
+                            Toast.makeText(this, getString(R.string.invalid_password), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(this, getString(R.string.no_user_found), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, getString(R.string.invalid_password), Toast.LENGTH_SHORT).show();
+                }
+
+
+                //Clossing the password dialog
+                passwordDialog.dismiss();
+                break;
+        }
+
+    }
+
+    public void showStartDatePicker() {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startDate);
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        // Get Current Date
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                        monthOfYear = monthOfYear + 1;
+                        String formattedDay = (String.valueOf(dayOfMonth));
+                        String formattedMonth = (String.valueOf(monthOfYear));
+
+                        if (dayOfMonth < 10) {
+                            formattedDay = "0" + dayOfMonth;
+                        }
+
+                        if (monthOfYear < 10) {
+                            formattedMonth = "0" + monthOfYear;
+                        }
+
+                        String date = formattedDay + "-" + formattedMonth + "-" + year;
+                        startDateText.setText(date);
+                        Calendar firstDayCalendar = new GregorianCalendar(year, monthOfYear - 1, dayOfMonth);
+                        startDate = firstDayCalendar.getTime();
+//                        searchByDateFlag = true;
+//                        final List<PatientModel> patientModel = filter(patientModels, date);
+//                        ((PatientListAdapter) recyclerView.getAdapter()).setFilter(patientModel);
+                    }
+                }, mYear, mMonth, mDay);
+        Calendar maxDate = Calendar.getInstance();
+        maxDate.setTime(endDate);
+        maxDate.set(maxDate.HOUR_OF_DAY, 23);
+        maxDate.set(maxDate.MINUTE, 59);
+        maxDate.set(maxDate.SECOND, 59);
+        datePickerDialog.getDatePicker().setMinDate(minDate.getTime());
+        datePickerDialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
+        //datePickerDialog.getDatePicker().setMaxDate(endDate.getTime() + 1000);
+        datePickerDialog.updateDate(year, month, day);
+        datePickerDialog.show();
+
+    }
+
+    public void showEndDatePicker() {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(endDate);
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        // Get Current Date
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                        monthOfYear = monthOfYear + 1;
+                        String formattedDay = (String.valueOf(dayOfMonth));
+                        String formattedMonth = (String.valueOf(monthOfYear));
+
+                        if (dayOfMonth < 10) {
+                            formattedDay = "0" + dayOfMonth;
+                        }
+
+                        if (monthOfYear < 10) {
+                            formattedMonth = "0" + monthOfYear;
+                        }
+
+                        String date = formattedDay + "-" + formattedMonth + "-" + year;
+                        endDateText.setText(date);
+                        Calendar firstDayCalendar = new GregorianCalendar(year, monthOfYear - 1, dayOfMonth);
+                        endDate = firstDayCalendar.getTime();
+//                        searchByDateFlag = true;
+//                        final List<PatientModel> patientModel = filter(patientModels, date);
+//                        ((PatientListAdapter) recyclerView.getAdapter()).setFilter(patientModel);
+                    }
+                }, mYear, mMonth, mDay);
+        Calendar maxDate = Calendar.getInstance();
+        maxDate.set(Calendar.HOUR_OF_DAY, 23);
+        maxDate.set(Calendar.MINUTE, 59);
+        maxDate.set(Calendar.SECOND, 59);
+        datePickerDialog.getDatePicker().setMinDate(startDate.getTime());
+        datePickerDialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
+        datePickerDialog.updateDate(year, month, day);
+        datePickerDialog.show();
+
+    }
+
+
+    public void showDateTime() {
+        // Get Current Date
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                        monthOfYear = monthOfYear + 1;
+                        String formattedDay = (String.valueOf(dayOfMonth));
+                        String formattedMonth = (String.valueOf(monthOfYear));
+
+                        if (dayOfMonth < 10) {
+                            formattedDay = "0" + dayOfMonth;
+                        }
+
+                        if (monthOfYear < 10) {
+                            formattedMonth = "0" + monthOfYear;
+                        }
+
+                        String date = formattedDay + "-" + formattedMonth + "-" + year;
+                        searchByDateFlag = true;
+                        final List<PatientModel> patientModel = filter(patientModels, date);
+                        ((PatientListAdapter) recyclerView.getAdapter()).setFilter(patientModel);
+                    }
+                }, mYear, mMonth, mDay);
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        datePickerDialog.show();
+    }
+
+    private List<PatientModel> filter(List<PatientModel> models, String query) {
+        query = query.toLowerCase();
+        final List<PatientModel> filteredModelList = new ArrayList<>();
+        for (PatientModel model : models) {
+            if (searchByDateFlag) {
+                SimpleDateFormat simpledateformat = new SimpleDateFormat("dd-MM-yyyy");
+                final String text = simpledateformat.format(model.getAdmissionDateAndTime()).toString();
+                if (text.contains(query)) {
+                    filteredModelList.add(model);
+                }
+            } else {
+                final String text = model.getPatientName().toLowerCase();
+                if (text.contains(query)) {
+                    filteredModelList.add(model);
+                }
+            }
+        }
+        if (filteredModelList.size() == 0) {
+            ((TextView) findViewById(R.id.noDataAvailableTextView)).setText("No result found");
+            ((TextView) findViewById(R.id.noDataAvailableTextView)).setVisibility(View.VISIBLE);
+        } else {
+            ((TextView) findViewById(R.id.noDataAvailableTextView)).setVisibility(View.GONE);
+        }
+        return filteredModelList;
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.summary) {
+            Intent intent = new Intent(PatientListActivity.this, SummaryActivity.class);
+            startActivity(intent);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+            return true;
+
+        }
+        if (id == R.id.sync) {
+
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(Gravity.LEFT);
+            int sync_timeout_in_second = 60;
+
+            //if somebody give string value in the strings.xml, we have to handle that
+            try {
+                sync_timeout_in_second = Integer.parseInt(getString(R.string.sync_timeout_in_second));
+            } catch (Exception e) {
+//                    Log.w(TAG, getString(R.string.invalid_timeout));
+            }
+
+            progressDialog.show();
+            SyncAsyncTask syncAsyncTask = new SyncAsyncTask();
+            syncAsyncTask.setSyncListener(PatientListActivity.this);
+            SyncServiceImpl syncService = new SyncServiceImpl();
+            syncAsyncTask.execute(getString(R.string.server_url), isNetworkAvailable(), sync_timeout_in_second, syncService.getSyncmodel());
+            return true;
+        }
+        if (id == R.id.logout) {
+            Intent intent = new Intent(PatientListActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+        if (id == R.id.clear_data) {
+
+            RealmResults<Patient> patients = LRCM.getInstance().getRealm()
+                    .where(Patient.class)
+                    .equalTo("isSynced", false)
+                    .findAll();
+            int size = patients.size();
+            LRCM.getInstance().closeRealm();
+
+            String warningMessage = "";
+            if (size > 0) {
+                warningMessage += size + " number of record not synced. ";
+            }
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(warningMessage + getString(R.string.clear_data_warning))
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            dialog.cancel();
+
+                            //Show password dialog to get the password
+                            showPasswordDialog();
+
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //  Action for 'NO' Button
+                            dialog.cancel();
+                        }
+                    });
+            //Creating dialog box
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    boolean showHideFlag = false;
+
+    public void showPasswordDialog() {
+
+        Button cancleButton, okButton;
+
+        final ImageView visiblePasswordIcon;
+
+        passwordDialog = new Dialog(this);
+        passwordDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        passwordDialog.setContentView(R.layout.password_dialog);
+
+        cancleButton = (Button) passwordDialog.findViewById(R.id.cancel_button);
+        okButton = (Button) passwordDialog.findViewById(R.id.ok_button);
+
+        password = (EditText) passwordDialog.findViewById(R.id.password);
+        visiblePasswordIcon = (ImageView) passwordDialog.findViewById(R.id.visible_icon);
+        visiblePasswordIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (showHideFlag) {
+                    password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    visiblePasswordIcon.setImageResource(R.drawable.show);
+                    showHideFlag = false;
+                } else {
+                    password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    visiblePasswordIcon.setImageResource(R.drawable.hide);
+                    showHideFlag = true;
+                }
+            }
+        });
+        //Get CurrentDate and save the instance
+        cancleButton.setOnClickListener(this);
+        okButton.setOnClickListener(this);
+        passwordDialog.show();
+    }
+
+    /**
+     * This method will check whethere there is a network connectivity or not
+     *
+     * @return true if there is network connectivity, false if there is not network connectivity
+     */
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    @Override
+    public void syncComplete(AsyncTaskResultModel asyncTaskResultModel) {
+        progressDialog.show();
+        if (asyncTaskResultModel != null) {
+            switch (asyncTaskResultModel.getResult()) {
+                case Constant.Result.SUCCESS:
+                    progressDialog.dismiss();
+                    alertDialog.setTitle(getString(R.string.sync_success));
+                    if (asyncTaskResultModel.getMessage() != null && !(asyncTaskResultModel.getMessage().trim().equals(""))) {
+                        alertDialog.setMessage(asyncTaskResultModel.getMessage());
+                    } else {
+                        alertDialog.setMessage(getString(R.string.sync_success));
+                    }
+                    alertDialog.show();
+                    break;
+                case Constant.Result.ERROR:
+                    progressDialog.dismiss();
+                    alertDialog.setTitle(getString(R.string.error));
+                    alertDialog.setMessage(asyncTaskResultModel.getMessage());
+                    alertDialog.show();
+                    break;
+                case Constant.Result.SERVER_ERROR:
+                    progressDialog.dismiss();
+                    alertDialog.setTitle(getString(R.string.server_error));
+                    alertDialog.setMessage(asyncTaskResultModel.getMessage());
+                    alertDialog.show();
+                    break;
+                case Constant.Result.REQUEST_TIMEOUT:
+                    progressDialog.dismiss();
+                    alertDialog.setTitle(getString(R.string.error));
+                    alertDialog.setMessage(getString(R.string.request_timeout));
+                    alertDialog.show();
+                    break;
+                case Constant.Result.NO_DATA_TO_SYNC:
+                    progressDialog.dismiss();
+                    Toast.makeText(this, getString(R.string.no_data_to_sync), Toast.LENGTH_SHORT).show();
+                    break;
+                case Constant.Result.NO_INTERNET:
+                    progressDialog.dismiss();
+                    Toast.makeText(this, getString(R.string.internet_check), Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            progressDialog.dismiss();
+            Toast.makeText(this, getString(R.string.error) + " code 3: sync error", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (searchByDateFlag) {
+            final List<PatientModel> patientModel = filter(patientModels, "");
+            ((PatientListAdapter) recyclerView.getAdapter()).setFilter(patientModel);
+            searchByDateFlag = false;
+        } else {
+            super.onBackPressed();
+            ActivityCompat.finishAffinity(this);
+        }
+    }
+}

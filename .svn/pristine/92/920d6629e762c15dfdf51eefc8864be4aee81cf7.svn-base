@@ -1,0 +1,1714 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary" />
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/save_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@android:drawable/ic_menu_save"
+        android:tint="@android:color/white"
+        app:backgroundTint="@color/colorPrimary" />
+
+    <android.support.v4.widget.NestedScrollView
+        style="@style/NestedScrollBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize">
+
+        <LinearLayout
+            android:id="@+id/activity_question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/activity_horizontal_margin"
+            tools:context="org.sdrc.lrcasemanagement.activity.DataActivity">
+
+            <TextView
+                android:id="@+id/serial_no_txt"
+                style="@style/CustomTextStyle" />
+
+            <EditText
+                android:id="@+id/serial_no"
+                style="@style/CustomEditTextStyle"
+                android:hint="@string/serial_no_hint"
+                android:inputType="number"
+                android:maxLength="3" />
+
+            <TextView
+                android:id="@+id/date_time_of_addmission_txt"
+                style="@style/CustomTextStyle" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="35sp"
+                android:layout_marginTop="3sp">
+
+                <EditText
+                    android:id="@+id/date_time_of_addmission"
+                    style="@style/CustomEditTextStyle"
+                    android:layout_marginRight="5sp"
+                    android:layout_toLeftOf="@+id/show_admission_date_time"
+                    android:focusable="false"
+                    android:gravity="center_vertical"
+                    android:hint="@string/date_of_admission_hint"></EditText>
+
+                <ImageView
+                    android:id="@+id/show_admission_date_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/datepicker" />
+            </RelativeLayout>
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/patient_type" />
+
+            <EditText
+                android:id="@+id/patien_type"
+                style="@style/CustomEditTextStyle"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                android:hint="@string/patient_type_hint" />
+
+            <RelativeLayout
+                android:id="@+id/patient_type_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:layout_marginTop="10sp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/referred_type_label"
+                    style="@style/CustomTextStyle"
+                    android:text="@string/type_of_reffered_facility" />
+
+                <EditText
+                    android:id="@+id/referred_facility_type"
+                    style="@style/CustomEditTextStyle"
+                    android:layout_below="@id/referred_type_label"
+                    android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                    android:hint="@string/referred_facility_type" />
+
+                <TextView
+                    android:id="@+id/facility_name_lable"
+                    style="@style/CustomTextStyle"
+                    android:layout_below="@id/referred_facility_type"
+                    android:text="@string/referred_facility_name" />
+
+                <org.sdrc.lrcasemanagement.customclass.CustomEditText
+                    android:id="@+id/facility_name"
+                    style="@style/CustomEditTextStyle"
+                    android:layout_below="@id/facility_name_lable"
+                    android:hint="@string/referred_facility_name_hint"
+                    android:inputType="textCapWords" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/patient_name_txt"
+                style="@style/CustomTextStyle" />
+
+            <org.sdrc.lrcasemanagement.customclass.CustomEditText
+                android:id="@+id/patient_name"
+                style="@style/CustomEditTextStyle"
+                android:hint="@string/patient_name_hint"
+                android:inputType="textCapWords" />
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/patient_husband_name" />
+
+            <org.sdrc.lrcasemanagement.customclass.CustomEditText
+                android:id="@+id/patient_husband_name"
+                style="@style/CustomEditTextStyle"
+                android:hint="@string/patient_husband_name_hint"
+                android:inputType="textCapWords" />
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/address" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp"
+                android:layout_marginLeft="20sp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5sp"
+                    android:text="@string/state"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/state"
+                    android:layout_width="match_parent"
+                    android:layout_height="30sp"
+                    android:background="@drawable/grey_border"
+                    android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                    android:hint="@string/choose_state"
+                    android:padding="5sp"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/detail_address_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/detail_address_lable"
+                    style="@style/CustomTextStyle"
+                    android:layout_marginLeft="20sp"
+                    android:text="@string/detail_address_lable"
+                    android:textSize="15sp" />
+
+                <org.sdrc.lrcasemanagement.customclass.CustomEditText
+                    android:id="@+id/detail_address"
+                    style="@style/CustomEditTextStyle"
+                    android:layout_below="@id/detail_address_lable"
+                    android:layout_marginLeft="20sp"
+                    android:hint="@string/detail_address_hint"
+                    android:inputType="textCapWords"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/other_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginLeft="20sp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5sp"
+                        android:text="@string/district"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/district"
+                        android:layout_width="match_parent"
+                        android:layout_height="30sp"
+                        android:background="@drawable/grey_border"
+                        android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                        android:hint="@string/choose_district"
+                        android:padding="5sp"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginLeft="20sp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5sp"
+                        android:text="@string/block"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/block"
+                        android:layout_width="match_parent"
+                        android:layout_height="30sp"
+                        android:background="@drawable/grey_border"
+                        android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                        android:hint="@string/choose_block"
+                        android:padding="5sp"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginLeft="20sp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5sp"
+                        android:text="@string/village"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/village"
+                        android:layout_width="match_parent"
+                        android:layout_height="30sp"
+                        android:layout_weight="5"
+                        android:background="@drawable/grey_border"
+                        android:hint="@string/choose_village"
+                        android:inputType="textCapWords"
+                        android:padding="5sp"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/mobile_no" />
+
+            <EditText
+                android:id="@+id/mobile_number"
+                style="@style/CustomEditTextStyle"
+                android:hint="@string/mobile_no_hint"
+                android:inputType="number"
+                android:maxLength="10" />
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/age" />
+
+            <EditText
+                android:id="@+id/age"
+                style="@style/CustomEditTextStyle"
+                android:hint="@string/age_hint"
+                android:inputType="number"
+                android:maxLength="2" />
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/cast" />
+
+            <EditText
+                android:id="@+id/cast"
+                style="@style/CustomEditTextStyle"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                android:hint="@string/cast_hint" />
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/apl_bpl" />
+
+            <RadioGroup
+                android:id="@+id/apl_bpl_layout"
+                android:layout_width="match_parent"
+                android:layout_height="35sp"
+                android:layout_marginTop="3sp"
+                android:background="@drawable/grey_border"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="5sp">
+
+                <RadioButton
+                    android:id="@+id/radio_btn_apl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="APL" />
+
+                <RadioButton
+                    android:id="@+id/radio_btn_bpl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20sp"
+                    android:text="BPL" />
+            </RadioGroup>
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/previous_delivery_details" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:layout_marginTop="10sp"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7.5"
+                    android:text="@string/no_of_normal_deliveries"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/no_of_normal_deliveries"
+                    android:layout_width="0sp"
+                    android:layout_height="30sp"
+                    android:layout_weight="2.5"
+                    android:background="@drawable/grey_border"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:padding="5sp"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:layout_marginTop="5sp"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7.5"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/no_of_assisted_deliveries"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/no_of_assisted_deliveries"
+                    android:layout_width="0sp"
+                    android:layout_height="30sp"
+                    android:layout_weight="2.5"
+                    android:background="@drawable/grey_border"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:padding="5sp"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:layout_marginTop="5sp"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7.5"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/no_of_c_section_deliveries"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/no_of_c_section_deliveries"
+                    android:layout_width="0sp"
+                    android:layout_height="30sp"
+                    android:layout_weight="2.5"
+                    android:background="@drawable/grey_border"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:padding="5sp"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/no_of_children_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5sp"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:text="@string/no_of_live_child"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/no_of_live_child"
+                        android:layout_width="0sp"
+                        android:layout_height="35sp"
+                        android:layout_weight="4"
+                        android:background="@drawable/grey_border"
+                        android:inputType="number"
+                        android:maxLength="2"
+                        android:padding="5sp"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5sp"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:text="@string/no_of_death_child"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/no_of_death_child"
+                        android:layout_width="0sp"
+                        android:layout_height="35sp"
+                        android:layout_weight="4"
+                        android:background="@drawable/grey_border"
+                        android:inputType="number"
+                        android:maxLength="2"
+                        android:padding="5sp"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"
+                    android:text="@string/no_of_abortion"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/no_of_abortion"
+                    android:layout_width="0sp"
+                    android:layout_height="35sp"
+                    android:layout_weight="4"
+                    android:background="@drawable/grey_border"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:padding="5sp"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="6"
+                    android:text="@string/no_of_antenatal_checkups"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/no_of_antenatal_checkups"
+                    android:layout_width="0sp"
+                    android:layout_height="35sp"
+                    android:layout_weight="4"
+                    android:background="@drawable/grey_border"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:padding="5sp"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/antenatal_checkup_done_by_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/antenatal_checkup_done_by_lable"
+                    style="@style/CustomTextStyle"
+                    android:text="@string/antenatal_checkup_done_by" />
+
+                <EditText
+                    android:id="@+id/antenatal_checkup_done_by"
+                    style="@style/CustomEditTextStyle"
+                    android:layout_below="@id/antenatal_checkup_done_by_lable"
+                    android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                    android:hint="@string/antenatal_checkup_done_by_hint" />
+            </RelativeLayout>
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/test_before_delivery"
+                android:textSize="18sp" />
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/blood_pressure" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:layout_marginTop="10sp"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7.5"
+                    android:text="@string/systolic"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/systolic"
+                    android:layout_width="0sp"
+                    android:layout_height="30sp"
+                    android:layout_weight="2.5"
+                    android:background="@drawable/grey_border"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:padding="5sp"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:layout_marginTop="5sp"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7.5"
+                    android:text="@string/diastolic"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/diastolic"
+                    android:layout_width="0sp"
+                    android:layout_height="30sp"
+                    android:layout_weight="2.5"
+                    android:background="@drawable/grey_border"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:padding="5sp"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="6"
+                    android:text="@string/pulse_rate"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/pulse_rate"
+                    android:layout_width="0sp"
+                    android:layout_height="35sp"
+                    android:layout_weight="4"
+                    android:background="@drawable/grey_border"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:padding="5sp"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="6"
+                    android:text="@string/respiratory_rate"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/respiratory_rate"
+                    android:layout_width="0sp"
+                    android:layout_height="35sp"
+                    android:layout_weight="4"
+                    android:background="@drawable/grey_border"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:padding="5sp"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/heart_beat" />
+
+            <EditText
+                android:id="@+id/heart_beat"
+                style="@style/CustomEditTextStyle"
+                android:hint="@string/heart_beat_hint"
+                android:inputType="number"
+                android:maxLength="3" />
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/cervical_dilatation" />
+
+            <EditText
+                android:id="@+id/cervical_dilatation"
+                style="@style/CustomEditTextStyle"
+                android:hint="@string/cervical_dilatation_hint"
+                android:inputType="number"
+                android:maxLength="2" />
+
+            <RelativeLayout
+                android:id="@+id/is_partograph_started_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/CustomTextStyle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/is_partograph_started"
+                    android:text="@string/is_partograph_started" />
+
+                <ToggleButton
+                    android:id="@+id/is_partograph_started"
+                    android:layout_width="80sp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="12sp"
+                    android:layout_weight="1"
+                    android:checked="false"
+                    android:textOff="No"
+                    android:textOn="Yes" />
+            </RelativeLayout>
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/urin_albumine" />
+
+            <EditText
+                android:id="@+id/urin_albumine"
+                style="@style/CustomEditTextStyle"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                android:hint="@string/urin_albumine_hint" />
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/urin_sugar" />
+
+            <EditText
+                android:id="@+id/urin_sugar"
+                style="@style/CustomEditTextStyle"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                android:hint="@string/urin_sugar_hint" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp">
+
+                <TextView
+                    style="@style/CustomTextStyle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/is_blood_sugar_test_done"
+                    android:text="@string/blood_sugar" />
+
+                <ToggleButton
+                    android:id="@+id/is_blood_sugar_test_done"
+                    android:layout_width="80sp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="12sp"
+                    android:layout_weight="1"
+                    android:checked="false"
+                    android:textOff="No"
+                    android:textOn="Yes" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/blood_sugar_tests_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20sp"
+                    android:layout_marginTop="10sp"
+                    android:weightSum="5">
+
+                    <TextView
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:text="@string/fasting"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/fasting"
+                        android:layout_width="0sp"
+                        android:layout_height="30sp"
+                        android:layout_weight="2"
+                        android:background="@drawable/grey_border"
+                        android:inputType="number"
+                        android:maxLength="3"
+                        android:padding="5sp"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20sp"
+                    android:layout_marginTop="5sp"
+                    android:weightSum="5">
+
+                    <TextView
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:text="@string/postmeal"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/postmeal"
+                        android:layout_width="0sp"
+                        android:layout_height="30sp"
+                        android:layout_weight="2"
+                        android:background="@drawable/grey_border"
+                        android:inputType="number"
+                        android:maxLength="3"
+                        android:padding="5sp"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20sp"
+                    android:layout_marginTop="5sp"
+                    android:weightSum="5">
+
+                    <TextView
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:text="@string/random"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/random"
+                        android:layout_width="0sp"
+                        android:layout_height="30sp"
+                        android:layout_weight="2"
+                        android:background="@drawable/grey_border"
+                        android:inputType="number"
+                        android:maxLength="3"
+                        android:padding="5sp"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/vdrl" />
+
+            <EditText
+                android:id="@+id/vdrl"
+                style="@style/CustomEditTextStyle"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                android:hint="@string/vdrl_hint" />
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/sickling" />
+
+            <EditText
+                android:id="@+id/sickling"
+                style="@style/CustomEditTextStyle"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                android:hint="@string/sickling_hint" />
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/hiv_test" />
+
+            <EditText
+                android:id="@+id/hiv_test"
+                style="@style/CustomEditTextStyle"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                android:hint="@string/hiv_test_hint" />
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/blood_group" />
+
+            <EditText
+                android:id="@+id/blood_group"
+                style="@style/CustomEditTextStyle"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                android:hint="@string/blood_group_hint" />
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/rh_type" />
+
+            <EditText
+                android:id="@+id/rh_type"
+                style="@style/CustomEditTextStyle"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                android:hint="@string/rh_type_hint" />
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/current_delivery_info"
+                android:textSize="18sp" />
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/transport_to_hospital" />
+
+            <EditText
+                android:id="@+id/transport_to_hospital"
+                style="@style/CustomEditTextStyle"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                android:hint="@string/transport_to_hospital_hint" />
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/delivery_date" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="35sp"
+                android:layout_marginTop="3sp">
+
+                <EditText
+                    android:id="@+id/delivery_date_time"
+                    style="@style/CustomEditTextStyle"
+                    android:layout_marginRight="5sp"
+                    android:layout_toLeftOf="@+id/show_delivery_date_time"
+                    android:gravity="center_vertical"
+                    android:hint="@string/delivery_date_hint"></EditText>
+
+                <ImageView
+                    android:id="@+id/show_delivery_date_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/datepicker" />
+            </RelativeLayout>
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/delivery_by" />
+
+            <EditText
+                android:id="@+id/delivery_by"
+                style="@style/CustomEditTextStyle"
+                android:hint="@string/delivery_by_hint"
+                android:inputType="textCapWords" />
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/delivery_term" />
+
+            <EditText
+                android:id="@+id/delivery_term"
+                style="@style/CustomEditTextStyle"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                android:hint="@string/delivery_term_hint" />
+
+            <RelativeLayout
+                android:id="@+id/dexamethasone_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:layout_marginTop="10sp"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/CustomTextStyle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/dexamethasone"
+                    android:text="@string/dexamethasone" />
+
+                <ToggleButton
+                    android:id="@+id/dexamethasone"
+                    android:layout_width="80sp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="12sp"
+                    android:checked="false"
+                    android:textOff="No"
+                    android:textOn="Yes" />
+            </RelativeLayout>
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/delivery_type" />
+
+            <EditText
+                android:id="@+id/delivery_type"
+                style="@style/CustomEditTextStyle"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                android:hint="@string/delivery_type_hint" />
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/drug_given" />
+
+            <EditText
+                android:id="@+id/drug_given"
+                style="@style/CustomEditTextStyle"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                android:hint="@string/drug_given_hint" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp">
+
+                <TextView
+                    style="@style/CustomTextStyle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/was_cord_clamping_delayed"
+                    android:text="@string/was_cord_clamping_delayed" />
+
+                <ToggleButton
+                    android:id="@+id/was_cord_clamping_delayed"
+                    android:layout_width="80sp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="12sp"
+                    android:layout_weight="1"
+                    android:checked="false"
+                    android:textOff="No"
+                    android:textOn="Yes" />
+            </RelativeLayout>
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/gestational" />
+
+            <EditText
+                android:id="@+id/gestational"
+                style="@style/CustomEditTextStyle"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                android:hint="@string/gestational_hint" />
+
+            <RelativeLayout
+                android:id="@+id/insulin_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:layout_marginTop="5sp"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/CustomTextStyle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/insulin"
+                    android:text="@string/insulin"
+                    android:textSize="15sp" />
+
+                <ToggleButton
+                    android:id="@+id/insulin"
+                    android:layout_width="80sp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="12sp"
+                    android:checked="false"
+                    android:textOff="No"
+                    android:textOn="Yes" />
+            </RelativeLayout>
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/hypothyroidism" />
+
+            <EditText
+                android:id="@+id/hypothyroidism"
+                style="@style/CustomEditTextStyle"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                android:hint="@string/hypothyroidism_hint" />
+
+            <RelativeLayout
+                android:id="@+id/thyroxine_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:layout_marginTop="5sp"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/CustomTextStyle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/thyroxine"
+                    android:text="@string/thyroxine"
+                    android:textSize="15sp" />
+
+                <ToggleButton
+                    android:id="@+id/thyroxine"
+                    android:layout_width="80sp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="12sp"
+                    android:checked="false"
+                    android:textOff="No"
+                    android:textOn="Yes" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp">
+
+                <TextView
+                    style="@style/CustomTextStyle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/eclampsia"
+                    android:text="@string/eclampsia" />
+
+                <ToggleButton
+                    android:id="@+id/eclampsia"
+                    android:layout_width="80sp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="12sp"
+                    android:checked="false"
+                    android:textOff="No"
+                    android:textOn="Yes" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/magsulf_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:layout_marginTop="5sp"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/CustomTextStyle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/magsulf"
+                    android:text="@string/magsulf"
+                    android:textSize="15sp" />
+
+                <ToggleButton
+                    android:id="@+id/magsulf"
+                    android:layout_width="80sp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="12sp"
+                    android:checked="false"
+                    android:textOff="No"
+                    android:textOn="Yes" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:layout_marginBottom="5sp"
+                android:layout_marginTop="5sp"
+                android:background="@color/grey"
+                android:padding="5sp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/add_first_child"
+                    android:textColor="@android:color/white" />
+
+                <ImageView
+                    android:id="@+id/add_first_child"
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/plus_icon" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/child_list_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"></LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/another_child_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:background="@color/grey"
+                android:padding="5sp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/add_another_child"
+                    android:textColor="@android:color/white" />
+
+                <ImageView
+                    android:id="@+id/add_child"
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
+                    android:layout_toLeftOf="@+id/delete_child"
+                    android:src="@drawable/plus_icon" />
+
+                <ImageView
+                    android:id="@+id/delete_child"
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/minus_icon" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp">
+
+                <TextView
+                    style="@style/CustomTextStyle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginRight="74sp"
+                    android:text="@string/blood_transfusion" />
+
+                <ToggleButton
+                    android:id="@+id/blood_transfusion"
+                    android:layout_width="80sp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="12sp"
+                    android:checked="false"
+                    android:textOff="No"
+                    android:textOn="Yes" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/no_of_pints_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:layout_marginTop="5sp"
+                android:visibility="gone"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"
+                    android:text="@string/no_of_pints"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/no_of_pints"
+                    android:layout_width="0sp"
+                    android:layout_height="35sp"
+                    android:layout_weight="4"
+                    android:background="@drawable/grey_border"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:padding="5sp"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp">
+
+                <TextView
+                    style="@style/CustomTextStyle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginRight="74sp"
+                    android:text="@string/ppiucd_insertion" />
+
+                <ToggleButton
+                    android:id="@+id/ppiucd_insertion"
+                    android:layout_width="80sp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="12sp"
+                    android:checked="false"
+                    android:textOff="No"
+                    android:textOn="Yes" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp">
+
+                <TextView
+                    style="@style/CustomTextStyle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginRight="74sp"
+                    android:text="@string/ifa" />
+
+                <ToggleButton
+                    android:id="@+id/ifa"
+                    android:layout_width="80sp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="12sp"
+                    android:checked="false"
+                    android:textOff="No"
+                    android:textOn="Yes" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp">
+
+                <TextView
+                    style="@style/CustomTextStyle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginRight="74sp"
+                    android:text="@string/calcium_vit_d3" />
+
+                <ToggleButton
+                    android:id="@+id/calcium_vit_d3"
+                    android:layout_width="80sp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="12sp"
+                    android:checked="false"
+                    android:textOff="No"
+                    android:textOn="Yes" />
+            </RelativeLayout>
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/type_of_jsy" />
+
+            <EditText
+                android:id="@+id/type_of_jsy"
+                style="@style/CustomEditTextStyle"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                android:hint="@string/type_of_jsy_hint" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:layout_marginBottom="5sp"
+                android:layout_marginTop="15sp"
+                android:background="@color/grey"
+                android:padding="5sp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/add_first_child_status"
+                    android:textColor="@android:color/white" />
+
+                <ImageView
+                    android:id="@+id/add_first_child_status"
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/plus_icon" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/child_status_list_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"></LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/another_child_status_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:background="@color/grey"
+                android:padding="5sp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/add_another_child_status"
+                    android:textColor="@android:color/white" />
+
+                <ImageView
+                    android:id="@+id/add_child_status"
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
+                    android:layout_toLeftOf="@+id/delete_child_status"
+                    android:src="@drawable/plus_icon" />
+
+                <ImageView
+                    android:id="@+id/delete_child_status"
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/minus_icon" />
+            </RelativeLayout>
+
+            <TextView
+                style="@style/CustomTextStyle"
+                android:text="@string/status_of_mother" />
+
+            <EditText
+                android:id="@+id/status_of_mother"
+                style="@style/CustomEditTextStyle"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                android:focusable="false"
+                android:hint="@string/status_of_mother_hint" />
+
+            <LinearLayout
+                android:id="@+id/mother_status_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/mother_discharge_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:text="@string/discharge_date_time_mother" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="35sp"
+                        android:layout_marginTop="3sp">
+
+                        <EditText
+                            android:id="@+id/discharge_date_time_mother"
+                            style="@style/CustomEditTextStyle"
+                            android:layout_marginRight="5sp"
+                            android:layout_toLeftOf="@+id/show_discharge_date_time_mother"
+                            android:focusable="false"
+                            android:gravity="center_vertical"
+                            android:hint="@string/discharge_date_time_hint" />
+
+                        <ImageView
+                            android:id="@+id/show_discharge_date_time_mother"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/datepicker" />
+                    </RelativeLayout>
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:text="@string/transport_to_home_mother" />
+
+                    <EditText
+                        android:id="@+id/transport_to_home_mother"
+                        style="@style/CustomEditTextStyle"
+                        android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                        android:focusable="false"
+                        android:hint="@string/vehicle_used_for_transport_hint" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/mother_referred_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:text="@string/referred_date_time" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="35sp"
+                        android:layout_marginTop="3sp">
+
+                        <EditText
+                            android:id="@+id/referred_date_time_mother"
+                            style="@style/CustomEditTextStyle"
+                            android:layout_marginRight="5sp"
+                            android:layout_toLeftOf="@+id/show_referred_date_time_mother"
+                            android:focusable="false"
+                            android:gravity="center_vertical"
+                            android:hint="@string/referred_date_time_hint" />
+
+                        <ImageView
+                            android:id="@+id/show_referred_date_time_mother"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/datepicker" />
+                    </RelativeLayout>
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:text="@string/referred_by_mother" />
+
+                    <EditText
+                        android:id="@+id/referred_by_mother"
+                        style="@style/CustomEditTextStyle"
+                        android:hint="@string/referred_by_hint" />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:text="@string/referred_cause_mother" />
+
+                    <EditText
+                        android:id="@+id/referred_cause_mother"
+                        style="@style/CustomEditTextStyle"
+                        android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                        android:hint="@string/referred_cause_hint" />
+
+                    <RelativeLayout
+                        android:id="@+id/other_referred_cause_mother_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/other_referred_cause_mother_lable"
+                            style="@style/CustomTextStyle"
+                            android:text="@string/other_referred_cause_mother" />
+
+                        <org.sdrc.lrcasemanagement.customclass.CustomEditText
+                            android:id="@+id/other_referred_cause_mother"
+                            style="@style/CustomEditTextStyle"
+                            android:layout_below="@id/other_referred_cause_mother_lable"
+                            android:hint="@string/other_referred_cause_mother_hint"
+                            android:inputType="textCapWords" />
+                    </RelativeLayout>
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:text="@string/referred_transport_mother" />
+
+                    <EditText
+                        android:id="@+id/referred_transport_mother"
+                        style="@style/CustomEditTextStyle"
+                        android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                        android:focusable="false"
+                        android:hint="@string/referred_transport_hint" />
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:text="@string/referred_area_mother" />
+
+                    <EditText
+                        android:id="@+id/referred_area_mother"
+                        style="@style/CustomEditTextStyle"
+                        android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                        android:focusable="false"
+                        android:hint="@string/referred_area_hint" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/other_referred_facility_mother_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/other_referred_facility_mother_lable"
+                        style="@style/CustomTextStyle"
+                        android:text="@string/other_referred_facility_mother" />
+
+                    <org.sdrc.lrcasemanagement.customclass.CustomEditText
+                        android:id="@+id/other_referred_facility_mother"
+                        style="@style/CustomEditTextStyle"
+                        android:layout_below="@id/other_referred_facility_mother_lable"
+                        android:hint="@string/other_referred_facility_mother_hint"
+                        android:inputType="textCapWords" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/mother_lama_date_time_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:text="@string/lama_date_time_mother" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="35sp"
+                        android:layout_marginTop="3sp">
+
+                        <EditText
+                            android:id="@+id/lama_date_time_mother"
+                            style="@style/CustomEditTextStyle"
+                            android:layout_marginRight="5sp"
+                            android:layout_toLeftOf="@+id/show_lama_date_time_mother"
+                            android:focusable="false"
+                            android:gravity="center_vertical"
+                            android:hint="@string/lama_date_time_hint"></EditText>
+
+                        <ImageView
+                            android:id="@+id/show_lama_date_time_mother"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/datepicker" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/mother_dead_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:text="@string/patient_death_cause_mother" />
+
+                    <EditText
+                        android:id="@+id/patient_death_cause_mother"
+                        style="@style/CustomEditTextStyle"
+                        android:drawableRight="@drawable/ic_keyboard_arrow_down"
+                        android:hint="@string/patient_death_cause_hint" />
+
+                    <RelativeLayout
+                        android:id="@+id/other_death_cause_mother_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/other_death_cause_mother_lable"
+                            style="@style/CustomTextStyle"
+                            android:text="@string/other_death_cause_mother" />
+
+                        <org.sdrc.lrcasemanagement.customclass.CustomEditText
+                            android:id="@+id/other_death_cause_mother"
+                            style="@style/CustomEditTextStyle"
+                            android:layout_below="@id/other_death_cause_mother_lable"
+                            android:hint="@string/other_death_cause_mother_hint"
+                            android:inputType="textCapWords" />
+                    </RelativeLayout>
+
+                    <TextView
+                        style="@style/CustomTextStyle"
+                        android:text="@string/patient_death_date_time_mother" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="35sp"
+                        android:layout_marginTop="3sp">
+
+                        <EditText
+                            android:id="@+id/patient_death_date_time_mother"
+                            style="@style/CustomEditTextStyle"
+                            android:layout_marginRight="5sp"
+                            android:layout_toLeftOf="@+id/show_patient_death_date_time_mother"
+                            android:focusable="false"
+                            android:gravity="center_vertical"
+                            android:hint="@string/patient_death_date_time_hint"></EditText>
+
+                        <ImageView
+                            android:id="@+id/show_patient_death_date_time_mother"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/datepicker" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/mother_status_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="120sp" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</android.support.design.widget.CoordinatorLayout>

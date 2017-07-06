@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="org.sdrc.lrcasemanagement.activity.LRCMActivity">
+
+    <LinearLayout
+        android:id="@+id/activity_question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context="org.sdrc.lrcasemanagement.activity.DataActivity">
+
+        <TextView
+            android:id="@+id/patient_name_lable_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:text="@string/patient_name_lable_text" />
+
+        <EditText
+            android:id="@+id/patient_name_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Patient Name"
+            android:inputType="textCapSentences" />
+
+        <TextView
+            android:id="@+id/patient_age_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:text="@string/patient_age_lable_text" />
+
+        <EditText
+            android:id="@+id/patient_age_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="2"
+            android:hint="Patient Age"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/patient_mcts_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:text="MCTS NO" />
+
+        <EditText
+            android:id="@+id/mcts_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="MCTS NO"
+            android:inputType="textCapSentences" />
+
+        <TextView
+            android:id="@+id/doatv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:text="Date of Admission" />
+
+        <EditText
+            android:id="@+id/doa_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Date Of admission"
+            android:inputType="date" />
+
+        <ToggleButton
+            android:id="@+id/toggleButtonPDI"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:text="PDI" />
+
+        <ToggleButton
+            android:id="@+id/toggleButtonPOSTDI"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:text="POST DI" />
+
+
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/edit_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@android:drawable/ic_menu_edit" />
+</android.support.design.widget.CoordinatorLayout>

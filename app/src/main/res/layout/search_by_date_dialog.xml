@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="350sp"
+        android:layout_height="45sp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="SEARCH BY DATE"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20sp">
+
+        <TextView
+            android:id="@+id/start_date_label"
+            style="@style/CustomTextStyle"
+            android:layout_marginTop="15sp"
+            android:text="@string/start_date" />
+
+        <RelativeLayout
+            android:id="@+id/start_date_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/start_date_label">
+
+            <EditText
+                android:id="@+id/search_start_date"
+                style="@style/CustomEditTextStyle"
+                android:layout_marginRight="5sp"
+                android:layout_toLeftOf="@+id/show_search_start_date"
+                android:focusable="false"
+                android:gravity="center_vertical"
+                android:hint="@string/start_date"></EditText>
+
+            <ImageView
+                android:id="@+id/show_search_start_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/datepicker" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/end_date_label"
+            style="@style/CustomTextStyle"
+            android:layout_below="@id/start_date_picker"
+            android:text="@string/end_date" />
+
+        <RelativeLayout
+            android:id="@+id/end_date_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/end_date_label">
+
+            <EditText
+                android:id="@+id/search_end_date"
+                style="@style/CustomEditTextStyle"
+                android:layout_marginRight="5sp"
+                android:layout_toLeftOf="@+id/search_show_end_date"
+                android:focusable="false"
+                android:gravity="center_vertical"
+                android:hint="@string/end_date"></EditText>
+
+            <ImageView
+                android:id="@+id/search_show_end_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/datepicker" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10sp"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/search_cancel"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/search_date"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Search" />
+    </LinearLayout>
+
+
+</LinearLayout>
