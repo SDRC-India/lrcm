@@ -1,0 +1,2 @@
+# lrcm
+Labour Room Case Management (LRCM) application is an effort to create a comprehensive system that captures all relevant information related to the labour room cases. It collects information about a ‘would be mother and her child’ beyond the details maintained in the delivery registers. Earlier, labour room case management documentation was entirely paper based. Through digitization of the entire process, LRCM application aims to bridge the gaps that were seen in paper based documentation and ensures more efficient management of labour room cases.
